@@ -1,11 +1,13 @@
 import React from "react";
+import Sidebar from "./components/Sidebar";
+import TopNav from "./components/TopNav";
 
 function App() {
   return (
     <div className="flex h-screen bg-gray-50 border">
-      Sidebar
+      <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 border">
-        Topnave
+        <TopNav/>
         <main className="flex-1 overflow-y-auto p-6 border">
           <div className="max-w-7xl mx-auto border">
             DashBoard
