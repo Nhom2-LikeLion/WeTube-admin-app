@@ -1,4 +1,5 @@
 import React from "react";
+import AnalyticsChart from './components/AnalyticsChart';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
             DashBoard
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 border">
               <div className="lg:col-span-2 border">
-                AnalyticsChart
+                <AnalyticsChart/>
               </div>
               <div>
                 RecentVideos
