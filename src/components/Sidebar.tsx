@@ -164,7 +164,7 @@ const Sidebar: React.FC = () => {
             <Play className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-white text-lg font-bold">YouTube</h1>
+            <h1 className="text-white text-lg font-bold">WeTube</h1>
             <p className="text-gray-400 text-sm">Studio</p>
           </div>
         </div>

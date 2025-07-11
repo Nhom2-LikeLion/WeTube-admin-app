@@ -2,6 +2,8 @@ import React from "react";
 import Sidebar from "./components/Sidebar";
 import TopNav from "./components/TopNav";
 import AnalyticsChart from './components/AnalyticsChart';
+import DashboardStats from "./components/DashboardStats";
+import RecentVideos from "./components/RecentVideos";
 
 function App() {
   return (
@@ -11,13 +13,13 @@ function App() {
         <TopNav/>
         <main className="flex-1 overflow-y-auto p-6 border">
           <div className="max-w-7xl mx-auto border">
-            DashBoard
+            <DashboardStats/>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 border">
               <div className="lg:col-span-2 border">
                 <AnalyticsChart/>
               </div>
               <div>
-                RecentVideos
+                <RecentVideos/>
               </div>
             </div>
           </div>
