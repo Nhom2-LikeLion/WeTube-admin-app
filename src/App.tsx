@@ -1,29 +1,50 @@
 import React from "react";
-import Sidebar from "./components/Sidebar";
-import TopNav from "./components/TopNav";
-import AnalyticsChart from './components/AnalyticsChart';
-import DashboardStats from "./components/DashboardStats";
-import RecentVideos from "./components/RecentVideos";
+import DashboardPage from "./components/pages/DashboardPage";
+import Sidebar from "./components/layout/Sidebar";
+import TopNav from "./components/layout/TopNav";
+import { Route, Routes } from 'react-router-dom';
+import { ManageVideosPage } from './components/pages/ManageVideosPage';
+import { ManageChannelPage } from './components/pages/ManageChannelPage';
+import { ManageManagersPage } from './components/pages/ManageManagersPage';
+import { ViewStatsPage } from './components/pages/ViewStatsPage';
 
 function App() {
   return (
-    <div className="flex h-screen bg-gray-50 border">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 border">
-        <TopNav/>
-        <main className="flex-1 overflow-y-auto p-6 border">
-          <div className="max-w-7xl mx-auto border">
-            <DashboardStats/>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 border">
-              <div className="lg:col-span-2 border">
-                <AnalyticsChart/>
-              </div>
-              <div>
-                <RecentVideos/>
-              </div>
-            </div>
-          </div>
-        </main>
+    <div className="min-h-screen bg-gray-50 ">
+      <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-20">
+        <Sidebar />
+      </div>
+      <div className="flex flex-col min-w-0 ">
+        <div className="fixed top-0 left-64 right-0 bg-white z-10">
+          <TopNav />
+        </div>
+        {/* <div className="ml-64 pt-16 min-h-screen">
+          <DashboardPage />
+        </div> */}
+        <div className="ml-64 pt-16 min-h-screen">
+          <Routes>
+            <Route
+              path="/"
+              element={<DashboardPage />}
+            />
+            <Route
+              path="/manage-videos"
+              element={<ManageVideosPage />}
+            />
+            <Route
+              path="/manage-channels"
+              element={<ManageChannelPage />}
+            />
+            <Route
+              path="/manage-managers"
+              element={<ManageManagersPage />}
+            />
+            <Route
+              path="/view-stats"
+              element={<ViewStatsPage />}
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   );
