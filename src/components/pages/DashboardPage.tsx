@@ -1,7 +1,7 @@
 import React from 'react'
-import DashboardStats from '../feature/dashboard/DashboardStats';
-import AnalyticsChart from '../feature/dashboard/AnalyticsChart';
-import RecentVideos from '../feature/dashboard/RecentVideos';
+import DashboardStats from '../features/dashboard/DashboardStats';
+import AnalyticsChart from '../features/dashboard/AnalyticsChart';
+import RecentVideos from '../features/dashboard/RecentVideos';
 
 const DashboardPage = () => {
   return (

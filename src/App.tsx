@@ -1,7 +1,7 @@
 import React from "react";
 import DashboardPage from "./components/pages/DashboardPage";
-import Sidebar from "./components/layout/Sidebar";
-import TopNav from "./components/layout/TopNav";
+import Sidebar from "./components/layouts/Sidebar";
+import TopNav from "./components/layouts/TopNav";
 import { Route, Routes } from 'react-router-dom';
 import { ManageVideosPage } from './components/pages/ManageVideosPage';
 import { ManageChannelPage } from './components/pages/ManageChannelPage';

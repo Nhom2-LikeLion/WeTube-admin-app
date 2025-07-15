@@ -1,84 +1,63 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { ManagerInfo } from '../../types/managerTypes/managerinfo';
-import type { ReportState } from '../../types/managerTypes/managerReports';
-import type { Video } from '../../types/managerTypes/managerVideo';
-
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { ManagerInfo } from "../../types/managerTypes/managerInfo";
 
 export const managerApi = createApi({
-  reducerPath: 'managerApi',
+  reducerPath: "managerApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://687076897ca4d06b34b6db6f.mockapi.io/api/v1/',
+    baseUrl: "https://687076897ca4d06b34b6db6f.mockapi.io/api/v1/",
   }),
-  tagTypes: ['ManagerInfo', 'ManagerReports', 'ManagerVideos'],
+  tagTypes: ["ManagerInfo", "ManagerReports", "ManagerVideos", "Managers"],
   endpoints: (builder) => ({
+    // Lấy danh sách Managers
+    getManagers: builder.query<ManagerInfo[], void>({
+      query: () => "Manager",
+      providesTags: ["Managers"],
+    }),
 
-    // 1. Thông tin Manager
+    // Lấy thông tin một Manager
     getManagerInfo: builder.query<ManagerInfo, string>({
       query: (id) => `Manager/${id}`,
-      providesTags: ['ManagerInfo'],
+      providesTags: ["ManagerInfo"],
     }),
-    updateManagerInfo: builder.mutation<ManagerInfo, { id: string; data: Partial<ManagerInfo> }>({
+
+    // Thêm Manager
+    addManager: builder.mutation<ManagerInfo, Partial<ManagerInfo>>({
+      query: (data) => ({
+        url: "Manager",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Managers"],
+    }),
+
+    // Cập nhật thông tin Manager
+    updateManagerInfo: builder.mutation<
+      ManagerInfo,
+      { id: string; data: Partial<ManagerInfo> }
+    >({
       query: ({ id, data }) => ({
         url: `Manager/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
       }),
-      invalidatesTags: ['ManagerInfo'],
+      invalidatesTags: ["ManagerInfo", "Managers"],
     }),
 
-    // 2. Báo cáo
-    getManagerReportState: builder.query<ReportState, string>({
-      query: (id) => `Manager/${id}`,
-      providesTags: ['ManagerReports'],
-    }),
-    updateReportState: builder.mutation<ReportState, { id: string; data: Partial<ReportState> }>({
-      query: ({ id, data }) => ({
-        url: `managers/${id}/reports`,
-        method: 'PUT',
-        body: data,
-      }),
-      invalidatesTags: ['ManagerReports'],
-    }),
-
-    // 3. Video
-    getManagerVideos: builder.query<Video[], string>({
-      query: (id) => `Manager/${id}`,
-      providesTags: ['ManagerVideos'],
-    }),
-    addVideo: builder.mutation<Video, { id: string; data: Partial<Video> }>({
-      query: ({ id, data }) => ({
+    // Xóa Manager
+    deleteManager: builder.mutation<{ success: boolean }, string>({
+      query: (id) => ({
         url: `Manager/${id}`,
-        method: 'POST',
-        body: data,
+        method: "DELETE",
       }),
-      invalidatesTags: ['ManagerVideos'],
+      invalidatesTags: ["Managers"],
     }),
-    updateVideo: builder.mutation<Video, { id: string; videoId: string; data: Partial<Video> }>({
-      query: ({ id, videoId, data }) => ({
-        url: `managers/${id}/videos/${videoId}`,
-        method: 'PUT',
-        body: data,
-      }),
-      invalidatesTags: ['ManagerVideos'],
-    }),
-    deleteVideo: builder.mutation<{ success: boolean }, { id: string; videoId: string }>({
-      query: ({ id, videoId }) => ({
-        url: `managers/${id}/videos/${videoId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['ManagerVideos'],
-    }),
-
   }),
 });
 
 export const {
+  useGetManagersQuery,
+  useAddManagerMutation,
+  useDeleteManagerMutation,
   useGetManagerInfoQuery,
   useUpdateManagerInfoMutation,
-  useGetManagerReportStateQuery,
-  useUpdateReportStateMutation,
-  useGetManagerVideosQuery,
-  useAddVideoMutation,
-  useUpdateVideoMutation,
-  useDeleteVideoMutation,
 } = managerApi;
