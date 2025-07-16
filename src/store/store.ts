@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { managerApi } from "../services/api/managerApi.ts";
+import { videoApi } from "../services/api/videoApi.ts";
 
 
 export const store = configureStore({
@@ -7,9 +8,12 @@ export const store = configureStore({
         //dangnhap 
         
         [managerApi.reducerPath]: managerApi.reducer,
+        [videoApi.reducerPath]: videoApi.reducer,
     },
         middleware:(getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(managerApi.middleware),
+            getDefaultMiddleware()
+                 .concat(managerApi.middleware)
+                 .concat(videoApi.middleware),
 })
 
 
