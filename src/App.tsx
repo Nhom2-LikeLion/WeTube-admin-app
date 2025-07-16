@@ -1,5 +1,4 @@
-import React from "react";
-import DashboardPage from "./components/pages/DashboardPage";
+import Dashboard from "./components/pages/DashboardPage";
 import Sidebar from "./components/layout/Sidebar";
 import TopNav from "./components/layout/TopNav";
 import { Route, Routes } from 'react-router-dom';
@@ -18,14 +17,11 @@ function App() {
         <div className="fixed top-0 left-64 right-0 bg-white z-10">
           <TopNav />
         </div>
-        {/* <div className="ml-64 pt-16 min-h-screen">
-          <DashboardPage />
-        </div> */}
         <div className="ml-64 pt-16 min-h-screen">
           <Routes>
             <Route
               path="/"
-              element={<DashboardPage />}
+              element={<Dashboard />}
             />
             <Route
               path="/manage-videos"
