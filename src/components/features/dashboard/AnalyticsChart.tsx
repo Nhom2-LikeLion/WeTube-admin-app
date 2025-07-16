@@ -1,4 +1,3 @@
-import React from "react";
 import { TrendingUp } from "lucide-react";
 
 function AnalyticsChart() {
@@ -35,10 +34,7 @@ function AnalyticsChart() {
       <div className="p-6">
         <div className="h-64 flex items-end justify-between space-x-2">
           {chartData.map((data, index) => (
-            <div
-              key={index}
-              className="flex-1 flex flex-col items-center"
-            >
+            <div key={index} className="flex-1 flex flex-col items-center">
               <div className="w-full flex flex-col items-center space-y-1">
                 <div
                   className="w-full bg-blue-500 rounded-t-lg transition-all duration-500 ease-out"
