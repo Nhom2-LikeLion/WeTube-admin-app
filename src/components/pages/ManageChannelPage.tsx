@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ManageChannelPage = () => {
   return (
     <div className="p-6">

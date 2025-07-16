@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ManageVideosPage = () => {
   return (
     <div className="p-6">

@@ -1,3 +1,4 @@
+
 import Sales from "../feature/sections/today-views/Sales";
 import VisitorInsights from "../feature/sections/users-insights/UsersInsights";
 import TotalRevenue from "../feature/sections/total-revenue/TotalRevenue";
@@ -42,3 +43,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

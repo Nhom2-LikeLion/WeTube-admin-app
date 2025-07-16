@@ -2,9 +2,12 @@ import Dashboard from "./components/pages/DashboardPage";
 import Sidebar from "./components/layout/Sidebar";
 import TopNav from "./components/layout/TopNav";
 import { Route, Routes } from 'react-router-dom';
-import { ManageVideosPage } from './components/pages/ManageVideosPage';
+import Sidebar from "./components/layouts/Sidebar";
+import TopNav from "./components/layouts/TopNav";
+import DashboardPage from "./components/pages/DashboardPage";
 import { ManageChannelPage } from './components/pages/ManageChannelPage';
 import { ManageManagersPage } from './components/pages/ManageManagersPage';
+import { ManageVideosPage } from './components/pages/ManageVideosPage';
 import { ViewStatsPage } from './components/pages/ViewStatsPage';
 
 function App() {
