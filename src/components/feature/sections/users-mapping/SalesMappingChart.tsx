@@ -1,20 +1,19 @@
-import { type MutableRefObject, useMemo } from "react";
-import * as echarts from "echarts/core";
+import type EChartsReactCore from "echarts-for-react/lib/core";
+import { MapChart, type MapSeriesOption } from "echarts/charts";
 import {
-  TooltipComponent,
-  type TooltipComponentOption,
   GeoComponent,
   type GeoComponentOption,
+  TooltipComponent,
+  type TooltipComponentOption,
 } from "echarts/components";
-import { MapChart, type MapSeriesOption } from "echarts/charts";
+import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import type { CallbackDataParams } from "echarts/types/src/util/types.js";
-import type EChartsReactCore from "echarts-for-react/lib/core";
+import { type MutableRefObject, useMemo } from "react";
 import ReactEchart from "../../../base/ReactEhart";
 
+import colors from "tailwindcss/colors";
 import world from "../../../../assets/json/world.json";
 import { type SalesMappingDataItem } from "../../../../data/sales-mapping-data";
-import colors from "tailwindcss/colors";
 
 /* ----------------------------------------- */
 /*  Đăng ký module & bản đồ                  */
@@ -53,8 +52,16 @@ const SalesMappingChart = ({
         trigger: "item",
         showDelay: 0,
         transitionDuration: 0.2,
-        formatter: (p: CallbackDataParams) =>
-          `${p.name} : ${p.value ? p.value : 0}`,
+        formatter: (params) => {
+          if (Array.isArray(params)) {
+            // If params is an array, show the first item's name and value
+            const p = params[0];
+            return `${p.name} : ${p.value ? p.value : 0}`;
+          } else {
+            // If params is an object
+            return `${params.name} : ${params.value ? params.value : 0}`;
+          }
+        },
       },
 
       series: [
