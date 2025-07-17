@@ -6,7 +6,7 @@ import TopProducts from "../feature/sections/top-channels/TopProducts";
 import SalesMapping from "../feature/sections/users-mapping/SalesMapping";
 import ProductPerformance from "../feature/sections/channels-performance/ProductPerformance";
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
     <div className="grid grid-cols-12 gap-6">
       {/* xs=12            xl=7 */}
@@ -42,5 +42,5 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
 
