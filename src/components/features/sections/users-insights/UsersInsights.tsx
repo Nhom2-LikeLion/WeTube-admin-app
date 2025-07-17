@@ -1,44 +1,49 @@
 // components/sections/dashboard/visitor-insights/VisitorInsights.tsx
-import { useRef, useState } from "react";
 import type EChartsReactCore from "echarts-for-react/lib/core";
-
-import { userInsightsData } from "../../../../data/visitor-insights-data";
+import { useEffect, useRef, useState } from "react";
+import { transformUserData } from "../../../../data/visitor-insights-data";
+import { useGetAllUsersQuery } from "../../../../services/api/userApi";
 import LegendToggleButton from "../../../common/LegendToggleButton";
 import UserInsightsChart from "./UsersInsightsChart";
 
-const TIME_RANGES = ["day", "month", "year"] as const;
-
 const UserInsights = () => {
   const chartRef = useRef<EChartsReactCore | null>(null);
+  const TIME_RANGES = ["day", "month", "year"] as const;
 
-  /* trạng thái hiển thị series */
   const [legend, setLegend] = useState({
     "normal users": false,
     "pro users": false,
   });
 
-  /* range (D / M / Y) */
   const [timeRange, setTimeRange] =
     useState<(typeof TIME_RANGES)[number]>("month");
 
-  /* bật / tắt series */
   const handleLegendToggle = (name: keyof typeof legend) => {
     setLegend((prev) => ({ ...prev, [name]: !prev[name] }));
 
-    /* bật tắt trực tiếp trên ECharts */
     if (chartRef.current) {
       const instance = chartRef.current.getEchartsInstance();
       instance.dispatchAction({ type: "legendToggleSelect", name });
     }
   };
 
+   const { data: users = [], isLoading, error } = useGetAllUsersQuery();
+  useEffect(() => {
+    console.log("Fetched users:", users);
+  }, [users]);
+
+  // Optional: log error/loading nếu cần
+  useEffect(() => {
+    if (isLoading) console.log("Loading user data...");
+    if (error) console.error("Failed to fetch users:", error);
+  }, [isLoading, error]);
+  const transformedData = transformUserData(users, timeRange);
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
-      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-2xl font-semibold text-primary-700">Users</h4>
 
-        {/* Toggle range buttons */}
         <div className="inline-flex gap-1">
           {TIME_RANGES.map((range) => {
             const active = timeRange === range;
@@ -64,10 +69,21 @@ const UserInsights = () => {
       {/* Chart */}
       <UserInsightsChart
         chartRef={chartRef}
-        data={userInsightsData}
+        data={{
+          "normal users": transformedData["normal users"],
+          "pro users": transformedData["pro users"],
+        }}
+        // categories={transformedData.categories} // cần thêm prop này
         timeRange={timeRange}
         style={{ height: 176 }}
       />
+
+      {/* <UserInsightsChart
+        chartRef={chartRef}
+        data={userInsightsData}
+        timeRange={timeRange}
+        style={{ height: 176 }}
+      /> */}
 
       {/* Legend */}
       <div

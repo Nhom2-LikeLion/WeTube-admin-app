@@ -1,10 +1,9 @@
-
-import Sales from "../feature/sections/today-views/Sales";
-import VisitorInsights from "../feature/sections/users-insights/UsersInsights";
-import TotalRevenue from "../feature/sections/total-revenue/TotalRevenue";
-import TopProducts from "../feature/sections/top-channels/TopProducts";
-import SalesMapping from "../feature/sections/users-mapping/SalesMapping";
-import ProductPerformance from "../feature/sections/channels-performance/ProductPerformance";
+import ProductPerformance from "../features/sections/channels-performance/ProductPerformance";
+import Sales from "../features/sections/today-views/Sales";
+import TopProducts from "../features/sections/top-channels/TopProducts";
+import TotalRevenue from "../features/sections/total-revenue/TotalRevenue";
+import UserInsights from "../features/sections/users-insights/UsersInsights";
+import SalesMapping from "../features/sections/users-mapping/SalesMapping";
 
 const Dashboard = () => {
   return (
@@ -16,7 +15,7 @@ const Dashboard = () => {
 
       {/* xs=12  md=7      xl=5 */}
       <div className="col-span-12 md:col-span-7 xl:col-span-5">
-        <VisitorInsights />
+        <UserInsights />
       </div>
 
       {/* xs=12  md=5      xl=7 */}
@@ -43,4 +42,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
