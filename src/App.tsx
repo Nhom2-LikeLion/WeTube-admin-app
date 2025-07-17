@@ -1,12 +1,11 @@
-import React from "react";
-import DashboardPage from "./components/pages/DashboardPage";
+import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/layouts/Sidebar";
 import TopNav from "./components/layouts/TopNav";
-import { Route, Routes } from 'react-router-dom';
-import { ManageVideosPage } from './components/pages/ManageVideosPage';
-import { ManageChannelPage } from './components/pages/ManageChannelPage';
-import { ManageManagersPage } from './components/pages/ManageManagersPage';
-import { ViewStatsPage } from './components/pages/ViewStatsPage';
+import DashboardPage from "./components/pages/DashboardPage";
+import { ManageChannelPage } from "./components/pages/ManageChannelPage";
+import { ManageManagersPage } from "./components/pages/ManageManagersPage";
+import { ViewStatsPage } from "./components/pages/ViewStatsPage";
+import  VideoManagement   from './components/pages/videoPage/VideoManagement';
 
 function App() {
   return (
@@ -18,9 +17,6 @@ function App() {
         <div className="fixed top-0 left-64 right-0 bg-white z-10">
           <TopNav />
         </div>
-        {/* <div className="ml-64 pt-16 min-h-screen">
-          <DashboardPage />
-        </div> */}
         <div className="ml-64 pt-16 min-h-screen">
           <Routes>
             <Route
@@ -29,7 +25,7 @@ function App() {
             />
             <Route
               path="/manage-videos"
-              element={<ManageVideosPage />}
+              element={<VideoManagement />}
             />
             <Route
               path="/manage-channels"
