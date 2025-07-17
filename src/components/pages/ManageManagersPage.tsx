@@ -1,18 +1,18 @@
-import React, { useState, useCallback, type FormEvent } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useCallback, useEffect, type FormEvent } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useAddManagerMutation,
   useDeleteManagerMutation,
   useGetManagersQuery,
   useUpdateManagerInfoMutation,
+  useRejectManagerMutation,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";
 import ManagerInfoPage from "../features/manager/ManagerInfo";
-import type { FormData } from "../../types/managerTypes/managerVideo";
+import type { FormData } from "../../types/managerTypes/registerManager";
 import { AddManagerForm } from "../features/manager/AddManagerForm";
 import { UpdateManagerForm } from "../features/manager/UpdateManagerForm";
 import { ManagerList } from "../features/manager/ManagerList";
-
 import ReportCharts from "../features/manager/ReportCharts";
 
 const Modal: React.FC<{
@@ -38,6 +38,7 @@ const Modal: React.FC<{
 
 export const ManageManagersPage: React.FC = () => {
   const { managerId } = useParams<{ managerId?: string }>();
+  const navigate = useNavigate();
   const [selectedManagerId, setSelectedManagerId] = useState<string | null>(managerId || null);
   const [formState, setFormState] = useState<{
     showAddForm: boolean;
@@ -89,6 +90,24 @@ export const ManageManagersPage: React.FC = () => {
   const [addManager, { isLoading: isAdding }] = useAddManagerMutation();
   const [deleteManager] = useDeleteManagerMutation();
   const [updateManagerInfo, { isLoading: isUpdating }] = useUpdateManagerInfoMutation();
+  const [rejectManager, { isLoading: isRejecting }] = useRejectManagerMutation();
+
+  // Tự động đóng Modal khi thu nhỏ màn hình
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleResize = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) {
+        setFormState((prev) => ({
+          ...prev,
+          showAddForm: false,
+          showUpdateForm: false,
+        }));
+      }
+    };
+    handleResize(mediaQuery);
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
 
   const selectedManager = managers.find((manager) => manager.id === selectedManagerId);
 
@@ -125,14 +144,6 @@ export const ManageManagersPage: React.FC = () => {
             gender: "male",
             dateOfBirth: "",
             status: "Pending",
-            timestamp: "",
-            visitCount: 0,
-            revenue: 0,
-            dailyReports: 0,
-            weeklyReports: 0,
-            monthlyReports: 0,
-            processedReports: 0,
-            unprocessedReports: 0,
           },
         }));
       } catch {
@@ -154,6 +165,51 @@ export const ManageManagersPage: React.FC = () => {
       }
     },
     [deleteManager, selectedManagerId]
+  );
+
+  const handleEditManager = useCallback(
+    (id: string) => {
+      const manager = managers.find((m) => m.id === id);
+      if (manager) {
+        setFormState((prev) => ({
+          ...prev,
+          showUpdateForm: true,
+          managerInfo: {
+            name: manager.name,
+            email: manager.email,
+            phone: manager.phone || "",
+            password: "",
+            confirmPassword: "",
+            address: "",
+            gender: manager.gender,
+            dateOfBirth: manager.dateOfBirth || "",
+            status: manager.status,
+            dailyReports: manager.dailyReports || 0,
+            processedReports: manager.processedReports || 0,
+            unprocessedReports: manager.unprocessedReports || 0,
+          },
+        }));
+      }
+    },
+    [managers]
+  );
+
+  const handleBanManager = useCallback(
+    async (id: string) => {
+      if (isRejecting) return;
+      if (!window.confirm("Bạn có chắc muốn cấm quản lý này?")) return;
+      try {
+        await rejectManager(id).unwrap();
+        toast.success("Cấm quản lý thành công!");
+        if (selectedManagerId === id) {
+          setSelectedManagerId(null);
+          navigate("/managers");
+        }
+      } catch {
+        toast.error("Cấm quản lý thất bại!");
+      }
+    },
+    [rejectManager, isRejecting, selectedManagerId, navigate]
   );
 
   const handleUpdateManagerInfo = useCallback(
@@ -205,8 +261,8 @@ export const ManageManagersPage: React.FC = () => {
                 selectedManagerId={selectedManagerId}
                 onSelect={setSelectedManagerId}
                 onDelete={handleDeleteManager}
-                onApprove={() => {}}
-                onReject={() => {}}
+                onEdit={handleEditManager}
+                onBanned={handleBanManager}
               />
             </div>
             {selectedManagerId && (

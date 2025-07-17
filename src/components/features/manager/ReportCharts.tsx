@@ -14,16 +14,12 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 interface ReportChartsProps {
   dailyReports: number;
-  weeklyReports: number;
-  monthlyReports: number;
   processedReports: number;
   unprocessedReports: number;
 }
 
 const ReportCharts: React.FC<ReportChartsProps> = ({
   dailyReports,
-  weeklyReports,
-  monthlyReports,
   processedReports,
   unprocessedReports,
 }) => {
@@ -32,7 +28,7 @@ const ReportCharts: React.FC<ReportChartsProps> = ({
     datasets: [
       {
         label: "Số lượng báo cáo",
-        data: [dailyReports, weeklyReports, monthlyReports],
+        data: [dailyReports],
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,

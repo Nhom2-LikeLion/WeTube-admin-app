@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import type { FormData } from "../../../types/managerTypes/managerVideo";
+import type { FormData } from "../../../types/managerTypes/registerManager";
 
 export const AddManagerForm = ({
   newManager,
@@ -86,41 +86,6 @@ export const AddManagerForm = ({
         <option value="female">Nữ</option>
         <option value="other">Khác</option>
       </select>
-      <input
-        type="number"
-        placeholder="Báo cáo ngày"
-        value={newManager.dailyReports || ""}
-        onChange={(e) => setNewManager({ ...newManager, dailyReports: Number(e.target.value) || 0 })}
-        className="p-2 border rounded-md"
-      />
-      <input
-        type="number"
-        placeholder="Báo cáo tuần"
-        value={newManager.weeklyReports || ""}
-        onChange={(e) => setNewManager({ ...newManager, weeklyReports: Number(e.target.value) || 0 })}
-        className="p-2 border rounded-md"
-      />
-      <input
-        type="number"
-        placeholder="Báo cáo tháng"
-        value={newManager.monthlyReports || ""}
-        onChange={(e) => setNewManager({ ...newManager, monthlyReports: Number(e.target.value) || 0 })}
-        className="p-2 border rounded-md"
-      />
-      <input
-        type="number"
-        placeholder="Báo cáo đã xử lý"
-        value={newManager.processedReports || ""}
-        onChange={(e) => setNewManager({ ...newManager, processedReports: Number(e.target.value) || 0 })}
-        className="p-2 border rounded-md"
-      />
-      <input
-        type="number"
-        placeholder="Báo cáo chưa xử lý"
-        value={newManager.unprocessedReports || ""}
-        onChange={(e) => setNewManager({ ...newManager, unprocessedReports: Number(e.target.value) || 0 })}
-        className="p-2 border rounded-md"
-      />
     </div>
     <button
       type="submit"

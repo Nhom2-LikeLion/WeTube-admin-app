@@ -8,12 +8,26 @@ export interface managerData {
   avatarUrl?: string;
   dateOfBirth: string;
   gender: 'male' | 'female' | 'other';
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: 'Pending' | 'Approved' | 'Rejected'| 'Banned';
   dailyReports?: number;      // Số lượng báo cáo theo ngày
-  weeklyReports?: number;     // Số lượng báo cáo theo tuần
-  monthlyReports?: number;    // Số lượng báo cáo theo tháng
   processedReports?: number;  // Số lượng báo cáo đã xử lý
-  unprocessedReports?: number; // Số lượng báo cáo chưa xử lý
+  unprocessedReports?: number;
+  recentProcessedReports?: Report[]; // Danh sách 3 báo cáo đã xử lý gần đây
+  recentProcessedVideos?: Video[]; // Số lượng báo cáo chưa xử lý
+}
+export interface Report {
+  id: string;
+  title: string;
+  status: 'Processed';
+  processedDate: string; 
+  description: string;
+}
+export interface Video {
+  id: string;
+  title: string;
+  status: 'Processed';
+  processedDate: string; 
+  url?: string;
 }
 
 export interface ManagerInfoState {

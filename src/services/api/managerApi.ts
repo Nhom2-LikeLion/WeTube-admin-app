@@ -51,6 +51,18 @@ export const managerApi = createApi({
       }),
       invalidatesTags: ["Managers"],
     }),
+    approveManager: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/Manager/${id}`,
+        method: "PATCH",
+      }),
+    }),
+    rejectManager: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/Manager/${id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -60,4 +72,6 @@ export const {
   useDeleteManagerMutation,
   useGetManagerInfoQuery,
   useUpdateManagerInfoMutation,
+  useApproveManagerMutation,
+  useRejectManagerMutation,
 } = managerApi;
