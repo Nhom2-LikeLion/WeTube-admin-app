@@ -27,12 +27,13 @@ const RequireRole: React.FC<RequireRoleProps> = ({ children, allowRoles }) => {
 
       {/* Overlay warning message if user does not have access */}
       {!hasAccess && (
-        <div className="absolute top-0 left-0 w-full h-full bg-opacity-50 z-10 flex items-start justify-center pt-[10px]">
-          <div className="bg-white px-6 py-4 rounded-lg shadow-lg text-center">
-            <h2 className="text-red-600 text-xl font-bold mb-2">🚫 Access Denied</h2>
-            <p className="text-gray-700 text-sm">Please contact the administrator for access permissions.</p>
-          </div>
-        </div>
+ <div className="fixed top-10 left-65 w-full h-full bg-opacity-50 z-50 flex items-start justify-center pt-10 pr-60">
+  <div className="bg-white px-6 py-4 rounded-lg shadow-lg text-center">
+    <h2 className="text-red-600 text-xl font-bold mb-2">🚫 Access Denied</h2>
+    <p className="text-gray-700 text-sm">Please contact the administrator for access permissions.</p>
+  </div>
+</div>
+
       )}
     </div>
   );
