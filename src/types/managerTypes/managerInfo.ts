@@ -1,18 +1,24 @@
 import type { GET_MANAGER_INFO_FAILURE, GET_MANAGER_INFO_REQUEST, GET_MANAGER_INFO_SUCCESS } from "../../constants/managerInfoConstans";
 
-export interface ManagerInfo {
+export interface managerData {
   id: string;
   name: string;
   email: string;
-  status: string;
-  totalVideos: number;
-  createdAt: string;
-  updatedAt: string;
+  phone: string;
+  avatarUrl?: string;
+  dateOfBirth: string;
+  gender: 'male' | 'female' | 'other';
+  status: 'Pending' | 'Approved' | 'Rejected';
+  dailyReports?: number;      // Số lượng báo cáo theo ngày
+  weeklyReports?: number;     // Số lượng báo cáo theo tuần
+  monthlyReports?: number;    // Số lượng báo cáo theo tháng
+  processedReports?: number;  // Số lượng báo cáo đã xử lý
+  unprocessedReports?: number; // Số lượng báo cáo chưa xử lý
 }
 
 export interface ManagerInfoState {
     loading: boolean;
-    managerInfo: ManagerInfo | null;
+    managerInfo: managerData | null;
     error: string | null;
 }
 
@@ -22,7 +28,7 @@ interface GetManagerInfoRequestAction {
 
 interface GetManagerInfoSuccessAction {
     type: typeof GET_MANAGER_INFO_SUCCESS;
-    payload: ManagerInfo;
+    payload: managerData;
 }
 
 interface GetManagerInfoFailureAction {
