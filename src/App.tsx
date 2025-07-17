@@ -11,11 +11,11 @@ import { ViewStatsPage } from "./components/pages/ViewStatsPage";
 function App() {
   return (
     <div className="min-h-screen bg-gray-50 ">
-      <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-20">
+      <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-50">
         <Sidebar />
       </div>
       <div className="flex flex-col min-w-0 ">
-        <div className="fixed top-0 left-64 right-0 bg-white z-10">
+        <div className="fixed top-0 left-64 right-0 bg-white z-40">
           <TopNav />
         </div>
         {/* <div className="ml-64 pt-16 min-h-screen">
