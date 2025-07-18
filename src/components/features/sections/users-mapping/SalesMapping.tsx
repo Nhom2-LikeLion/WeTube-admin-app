@@ -21,7 +21,7 @@ const SalesMapping = () => {
         <SalesMappingChart
           salesMappingChartRef={chartRef}
           data={salesMappingData}
-          style={{ height: 260 }}
+          style={{ height: 500 }}
           minZoomLevel={0.75}
           maxZoomLevel={1.1}
         />

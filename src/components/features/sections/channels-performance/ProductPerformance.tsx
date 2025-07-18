@@ -34,7 +34,7 @@ const ProductPerformance = () => {
   return (
     <div className="p-4 bg-white rounded shadow">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
-        <h2 className="text-lg font-semibold">Channels Performance</h2>
+        <h2 className="text-lg font-semibold">Videos Performance</h2>
 
         <input
           type="text"
@@ -59,7 +59,10 @@ const ProductPerformance = () => {
         </thead>
         <tbody>
           {paginatedRows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50">
+            <tr
+              key={row.id}
+              className="hover:bg-gray-50"
+            >
               <td className="border px-3 py-2">{row.video}</td>
               <td className="border px-3 py-2">{row.name}</td>
               <td className="border px-3 py-2">
