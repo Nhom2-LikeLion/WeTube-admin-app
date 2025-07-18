@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import VideoDetailModal from './VideoDetailModalProps';
-import VideoEditModal from './VideoEditModalProps';
-import ConfirmationModal from './ConfirmationModalProps';
+import React, { useState } from "react";
+import ConfirmationModal from "./ConfirmationModalProps";
+import VideoDetailModal from "./VideoDetailModalProps";
+import VideoEditModal from "./VideoEditModalProps";
 
 import {
+  AlertTriangle,
   Check,
-  X,
-  Eye,
-  Edit,
-  Trash2,
-  Filter,
-  Plus,
-  Upload,
-  Tag,
   Clock,
-  AlertTriangle
-} from 'lucide-react';
-import type { VideoInfo } from '../../../types/managerVideoTypes/videoInfo';
-import { useGetVideosQuery, useUpdateVideoMutation, useDeleteVideoMutation } from '../../../services/api/videoApi';
-
+  Edit,
+  Eye,
+  Filter,
+  Tag,
+  Trash2,
+  X,
+} from "lucide-react";
+import {
+  useDeleteVideoMutation,
+  useGetVideosQuery,
+  useUpdateVideoMutation,
+} from "../../../services/api/videoApi";
+import type { VideoInfo } from "../../../types/managerVideoTypes/videoInfo";
 
 const VideoManagement: React.FC = () => {
-  const [filterStatus, setFilterStatus] = useState<string>('all');
-  const { data: videos = [], isLoading, error } = useGetVideosQuery();
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const { data: videos = [] } = useGetVideosQuery();
 
   const [selectedVideo, setSelectedVideo] = useState<VideoInfo | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -30,7 +31,7 @@ const VideoManagement: React.FC = () => {
 
   const [confirmationModal, setConfirmationModal] = useState<{
     isOpen: boolean;
-    type: 'approve' | 'reject' | 'delete' | 'remove';
+    type: "approve" | "reject" | "delete" | "remove";
     title: string;
     message: string;
     onConfirm: (reason?: string) => void;
@@ -38,35 +39,44 @@ const VideoManagement: React.FC = () => {
     reasonPlaceholder?: string;
   }>({
     isOpen: false,
-    type: 'approve',
-    title: '',
-    message: '',
-    onConfirm: () => { },
+    type: "approve",
+    title: "",
+    message: "",
+    onConfirm: () => {},
     showReasonInput: false,
-    reasonPlaceholder: ''
+    reasonPlaceholder: "",
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending': return 'Chờ duyệt';
-      case 'approved': return 'Đã phê duyệt';
-      case 'rejected': return 'Vi phạm';
-      default: return status;
+      case "pending":
+        return "Chờ duyệt";
+      case "approved":
+        return "Đã phê duyệt";
+      case "rejected":
+        return "Vi phạm";
+      default:
+        return status;
     }
   };
 
-  const filteredVideos = filterStatus === 'all'
-    ? videos
-    : videos.filter(video => video.status === filterStatus);
+  const filteredVideos =
+    filterStatus === "all"
+      ? videos
+      : videos.filter((video) => video.status === filterStatus);
 
   const handleViewVideo = (video: VideoInfo) => {
     setSelectedVideo(video);
@@ -77,7 +87,6 @@ const VideoManagement: React.FC = () => {
     setSelectedVideo(video);
     setIsEditModalOpen(true);
   };
-
 
   const [updateVideo] = useUpdateVideoMutation();
 
@@ -92,8 +101,8 @@ const VideoManagement: React.FC = () => {
           duration_seconds: updatedVideo.duration_seconds,
           upload_date: updatedVideo.upload_date,
           tags: updatedVideo.tags,
-          status: updatedVideo.status
-        }
+          status: updatedVideo.status,
+        },
       }).unwrap();
       setIsEditModalOpen(false);
     } catch (error) {
@@ -101,43 +110,66 @@ const VideoManagement: React.FC = () => {
     }
   };
 
-
-
   const handleApproveVideo = (video: VideoInfo) => {
     setConfirmationModal({
       isOpen: true,
+<<<<<<< HEAD
+      type: "approve",
+      title: "Phê duyệt video",
+      message: `Bạn có chắc chắn muốn phê duyệt video "${video.title}"? Video sẽ được hiển thị công khai trên nền tảng.`,
+=======
       type: 'approve',
       title: 'Video Approval',
       message: `Are you sure you want to approve the video? "${video.title}"? The video will be displayed publicly on the platform.`,
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
       onConfirm: async () => {
         try {
           await updateVideo({
             id: video.id,
             data: {
-              status: 'approved'
-            }
+              status: "approved",
+            },
           }).unwrap();
           console.log(`Video ${video.id} has been approved`);
         } catch (error) {
+<<<<<<< HEAD
+          console.error("Lỗi khi phê duyệt video:", error);
+=======
           console.error('Error approving video:', error);
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
         }
-      }
-
-
+      },
     });
   };
-
 
   const handleRejectVideo = (video: VideoInfo) => {
     setConfirmationModal({
       isOpen: true,
+<<<<<<< HEAD
+      type: "reject",
+      title: "Từ chối video",
+      message: `Bạn có chắc chắn muốn từ chối video "${video.title}"? Video sẽ bị đánh dấu vi phạm và không được hiển thị.`,
+=======
       type: 'reject',
       title: 'Reject video',
       message: `Are you sure you want to reject the video? "${video.title}"? The video will be marked as a violation and will not be displayed.`,
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
       onConfirm: async (reason) => {
         try {
           await updateVideo({
             id: video.id,
+<<<<<<< HEAD
+            data: { status: "rejected" },
+          }).unwrap();
+          console.log(`Video ${video.id} bị từ chối với lý do: ${reason}`);
+        } catch (error) {
+          console.error("Lỗi khi từ chối video:", error);
+        }
+      },
+      showReasonInput: true,
+      reasonPlaceholder:
+        "Ví dụ: Video chứa nội dung không phù hợp, vi phạm quy định cộng đồng...",
+=======
             data: { status: 'rejected' },
           }).unwrap();
           console.log(`Video ${video.id} rejected for the following reasons: ${reason}`);
@@ -147,6 +179,7 @@ const VideoManagement: React.FC = () => {
       },
       showReasonInput: true,
       reasonPlaceholder: 'For example: Video contains inappropriate content, violates community regulations...'
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
     });
   };
 
@@ -155,45 +188,59 @@ const VideoManagement: React.FC = () => {
   const handleDeleteVideo = (video: VideoInfo) => {
     setConfirmationModal({
       isOpen: true,
+<<<<<<< HEAD
+      type: "delete",
+      title: "Xóa video vĩnh viễn",
+      message: `Bạn có chắc chắn muốn xóa vĩnh viễn video "${video.title}"? Hành động này không thể hoàn tác.`,
+=======
       type: 'delete',
       title: 'Delete video permanently',
       message: `Are you sure you want to permanently delete the video? "${video.title}"? This action cannot be undone.`,
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
       onConfirm: async () => {
         try {
           await deleteVideo(video.id).unwrap();
           console.log(`Video ${video.id} has been deleted.`);
         } catch (error) {
+<<<<<<< HEAD
+          console.error("Lỗi khi xóa video:", error);
+=======
           console.error('Error while deleting video:', error);
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
         }
-
-      }
+      },
     });
   };
 
   const handleRemoveVideo = (video: VideoInfo) => {
     setConfirmationModal({
       isOpen: true,
+<<<<<<< HEAD
+      type: "remove",
+      title: "Gỡ xuống video",
+      message: `Bạn có chắc chắn muốn gỡ xuống video "${video.title}"? Video sẽ không còn hiển thị công khai.`,
+=======
       type: 'remove',
       title: 'Take down video',
       message: `Are you sure you want to take down the video? "${video.title}"? The video will no longer be publicly visible.`,
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
       onConfirm: async () => {
         try {
           await updateVideo({
             id: video.id,
-            data: { ...video, status: 'rejected' }
+            data: { ...video, status: "rejected" },
           }).unwrap();
 
           console.log(`Video ${video.id} has been taken down`);
         } catch (error) {
           console.error("Error removing video:", error);
         }
-      }
+      },
     });
   };
 
-
   const closeConfirmationModal = () => {
-    setConfirmationModal(prev => ({ ...prev, isOpen: false }));
+    setConfirmationModal((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -201,8 +248,15 @@ const VideoManagement: React.FC = () => {
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 mt-6">
         <div>
+<<<<<<< HEAD
+          <h2 className="text-2xl font-bold text-gray-900">Kiểm duyệt Video</h2>
+          <p className="text-gray-600">
+            Kiểm duyệt và quản lý nội dung video trên nền tảng
+          </p>
+=======
           <h2 className="text-2xl font-bold text-gray-900">Video Censorship</h2>
           <p className="text-gray-600">Moderate and manage video content on the platform</p>
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
         </div>
       </div>
 
@@ -211,6 +265,31 @@ const VideoManagement: React.FC = () => {
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center space-x-2">
             <Filter size={18} className="text-gray-500" />
+<<<<<<< HEAD
+            <span className="text-sm font-medium text-gray-700">
+              Lọc theo trạng thái:
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { key: "all", label: "Tất cả", count: videos.length },
+              {
+                key: "pending",
+                label: "Chờ duyệt",
+                count: videos.filter((v) => v.status === "pending").length,
+              },
+              {
+                key: "approved",
+                label: "Đã duyệt",
+                count: videos.filter((v) => v.status === "approved").length,
+              },
+              {
+                key: "rejected",
+                label: "Vi phạm",
+                count: videos.filter((v) => v.status === "rejected").length,
+              },
+            ].map((filter) => (
+=======
             <span className="text-sm font-medium text-gray-700">Filter by status:</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -220,13 +299,15 @@ const VideoManagement: React.FC = () => {
               { key: 'approved', label: 'Approved', count: videos.filter(v => v.status === 'approved').length },
               { key: 'rejected', label: 'Violate', count: videos.filter(v => v.status === 'rejected').length }
             ].map(filter => (
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
               <button
                 key={filter.key}
                 onClick={() => setFilterStatus(filter.key)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors ${filterStatus === filter.key
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  filterStatus === filter.key
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
               >
                 {filter.label} ({filter.count})
               </button>
@@ -238,7 +319,10 @@ const VideoManagement: React.FC = () => {
       {/* Videos Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
         {filteredVideos.map((video) => (
-          <div key={video.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+          <div
+            key={video.id}
+            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+          >
             <div className="relative">
               <img
                 src={video.thumbnail_url}
@@ -248,25 +332,42 @@ const VideoManagement: React.FC = () => {
               <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
                 {video.duration_seconds}
               </div>
-              <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(video.status)}`}>
+              <div
+                className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                  video.status
+                )}`}
+              >
                 {getStatusText(video.status)}
               </div>
             </div>
 
             <div className="p-4">
-              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{video.title}</h3>
+              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                {video.title}
+              </h3>
 
               <div className="flex items-center text-sm text-gray-500 mb-3">
                 <Clock size={14} className="mr-1" />
+<<<<<<< HEAD
+                <span>{video.upload_date}</span>
+                <span className="mx-2">•</span>
+                <Eye size={14} className="mr-1" />{" "}
+              </div>
+
+=======
                 <span>{video.upload_date}</span>            
               </div>
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
               <div className="flex items-center text-sm text-gray-600 mb-3">
                 <span>Uploaded by: {video.user_id}</span>
               </div>
 
               <div className="flex flex-wrap gap-1 mb-4">
                 {video.tags.map((tag, index) => (
-                  <span key={index} className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                  >
                     <Tag size={12} className="mr-1" />
                     {tag}
                   </span>
@@ -275,7 +376,7 @@ const VideoManagement: React.FC = () => {
 
               <div className="flex justify-between items-center">
                 <div className="flex space-x-2">
-                  {video.status === 'pending' && (
+                  {video.status === "pending" && (
                     <>
                       <button
                         onClick={() => handleApproveVideo(video)}
@@ -293,7 +394,7 @@ const VideoManagement: React.FC = () => {
                       </button>
                     </>
                   )}
-                  {video.status === 'approved' && (
+                  {video.status === "approved" && (
                     <button
                       onClick={() => handleRemoveVideo(video)}
                       className="flex items-center px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700 transition-colors"
@@ -363,10 +464,20 @@ const VideoManagement: React.FC = () => {
         showReasonInput={confirmationModal.showReasonInput}
         reasonPlaceholder={confirmationModal.reasonPlaceholder}
         confirmText={
+<<<<<<< HEAD
+          confirmationModal.type === "approve"
+            ? "Phê duyệt"
+            : confirmationModal.type === "reject"
+            ? "Từ chối"
+            : confirmationModal.type === "delete"
+            ? "Xóa vĩnh viễn"
+            : "Gỡ xuống"
+=======
           confirmationModal.type === 'approve' ? 'Approve' :
             confirmationModal.type === 'reject' ? 'Refuse' :
               confirmationModal.type === 'delete' ? 'Permanently Deleted' :
                 'Take down'
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
         }
       />
     </div>

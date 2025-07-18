@@ -20,7 +20,7 @@ import { type SalesMappingDataItem } from "../../../../data/sales-mapping-data";
 /* ----------------------------------------- */
 echarts.use([TooltipComponent, GeoComponent, MapChart, CanvasRenderer]);
 
-echarts.registerMap("world", world as any);
+echarts.registerMap("world", world as unknown as any);
 
 type EChartsOption = echarts.ComposeOption<
   TooltipComponentOption | GeoComponentOption | MapSeriesOption

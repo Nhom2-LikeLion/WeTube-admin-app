@@ -9,10 +9,8 @@ const Sales = () => {
       <div className="flex items-center justify-between mb-10">
         <div>
           
-          <h4 className="text-2xl font-semibold mb-1">Today's Views</h4>
+          <h4 className="text-2xl font-semibold mb-1">Today's Summary</h4>
 
-         
-          <p className="text-sm text-primary-400">Views Summary</p>
         </div>
 
         

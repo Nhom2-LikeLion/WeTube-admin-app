@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { X, Save, Tag, Plus, Trash2 } from 'lucide-react';
-import type { VideoInfo } from '../../../types/managerVideoTypes/videoInfo';
+import { Plus, Save, Tag, Trash2, X } from "lucide-react";
+import React, { useState } from "react";
+import type { VideoInfo } from "../../../types/managerVideoTypes/videoInfo";
 
 interface VideoEditModalProps {
   isOpen: boolean;
@@ -9,9 +9,14 @@ interface VideoEditModalProps {
   onSave: (updatedVideo: any) => void;
 }
 
-const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video, onSave }) => {
+const VideoEditModal: React.FC<VideoEditModalProps> = ({
+  isOpen,
+  onClose,
+  video,
+  onSave,
+}) => {
   const [editedVideo, setEditedVideo] = useState(video);
-  const [newTag, setNewTag] = useState('');
+  const [newTag, setNewTag] = useState("");
 
   React.useEffect(() => {
     setEditedVideo(video);
@@ -28,21 +33,21 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
     if (newTag.trim() && !editedVideo.tags.includes(newTag.trim())) {
       setEditedVideo({
         ...editedVideo,
-        tags: [...editedVideo.tags, newTag.trim()]
+        tags: [...editedVideo.tags, newTag.trim()],
       });
-      setNewTag('');
+      setNewTag("");
     }
   };
 
   const removeTag = (tagToRemove: string) => {
     setEditedVideo({
       ...editedVideo,
-      tags: editedVideo.tags.filter(tag => tag !== tagToRemove)
+      tags: editedVideo.tags.filter((tag) => tag !== tagToRemove),
     });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       addTag();
     }
@@ -65,15 +70,27 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
         <div className="p-6 space-y-6">
           {/* Video Preview */}
           <div className="flex items-center space-x-4">
-            <img 
-              src={editedVideo.thumbnail_url} 
+            <img
+              src={editedVideo.thumbnail_url}
               alt={editedVideo.title}
               className="w-32 h-20 object-cover rounded-lg"
             />
             <div>
+<<<<<<< HEAD
+              <p className="text-sm text-gray-500">
+                Video ID: {editedVideo.id}
+              </p>
+              <p className="text-sm text-gray-500">
+                Thời lượng: {editedVideo.duration_seconds}
+              </p>
+              <p className="text-sm text-gray-500">
+                Người tải: {editedVideo.user_id}
+              </p>
+=======
               <p className="text-sm text-gray-500">Video ID: {editedVideo.id}</p>
               <p className="text-sm text-gray-500">Duration: {editedVideo.duration_seconds}</p>
               <p className="text-sm text-gray-500">Uploader: {editedVideo.user_id}</p>
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
             </div>
           </div>
 
@@ -85,7 +102,9 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
             <input
               type="text"
               value={editedVideo.title}
-              onChange={(e) => setEditedVideo({ ...editedVideo, title: e.target.value })}
+              onChange={(e) =>
+                setEditedVideo({ ...editedVideo, title: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter video title..."
             />
@@ -97,8 +116,10 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
               Video Description
             </label>
             <textarea
-              value={editedVideo.description || ''}
-              onChange={(e) => setEditedVideo({ ...editedVideo, description: e.target.value })}
+              value={editedVideo.description || ""}
+              onChange={(e) =>
+                setEditedVideo({ ...editedVideo, description: e.target.value })
+              }
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter video description..."
@@ -112,7 +133,12 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
             </label>
             <select
               value={editedVideo.status}
-              onChange={(e) => setEditedVideo({ ...editedVideo, status: e.target.value as any })}
+              onChange={(e) =>
+                setEditedVideo({
+                  ...editedVideo,
+                  status: e.target.value as any,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="pending">Pending</option>
@@ -149,7 +175,10 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
               {/* Existing tags */}
               <div className="flex flex-wrap gap-2">
                 {editedVideo.tags.map((tag, index) => (
-                  <div key={index} className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                  <div
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                  >
                     <Tag size={12} className="mr-1" />
                     {tag}
                     <button
@@ -172,7 +201,12 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
             <input
               type="url"
               value={editedVideo.thumbnail_url}
-              onChange={(e) => setEditedVideo({ ...editedVideo, thumbnail_url: e.target.value })}
+              onChange={(e) =>
+                setEditedVideo({
+                  ...editedVideo,
+                  thumbnail_url: e.target.value,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="https://example.com/thumbnail.jpg"
             />
