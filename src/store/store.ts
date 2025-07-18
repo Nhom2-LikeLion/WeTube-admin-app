@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { managerApi } from "../services/api/managerApi.ts";
 import { videoApi } from "../services/api/videoApi.ts";
+import { authApi } from "../services/api/authApi.ts";
 
 
 export const store = configureStore({
@@ -9,11 +10,13 @@ export const store = configureStore({
         
         [managerApi.reducerPath]: managerApi.reducer,
         [videoApi.reducerPath]: videoApi.reducer,
+        [authApi.reducerPath]: authApi.reducer,
     },
         middleware:(getDefaultMiddleware) =>
             getDefaultMiddleware()
                  .concat(managerApi.middleware)
-                 .concat(videoApi.middleware),
+                 .concat(videoApi.middleware)
+                 .concat(authApi.middleware),
 })
 
 

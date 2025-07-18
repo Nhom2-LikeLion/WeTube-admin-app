@@ -97,7 +97,7 @@ const VideoManagement: React.FC = () => {
       }).unwrap();
       setIsEditModalOpen(false);
     } catch (error) {
-      console.error("Lỗi khi cập nhật video:", error);
+      console.error("Error while updating video:", error);
     }
   };
 
@@ -107,8 +107,8 @@ const VideoManagement: React.FC = () => {
     setConfirmationModal({
       isOpen: true,
       type: 'approve',
-      title: 'Phê duyệt video',
-      message: `Bạn có chắc chắn muốn phê duyệt video "${video.title}"? Video sẽ được hiển thị công khai trên nền tảng.`,
+      title: 'Video Approval',
+      message: `Are you sure you want to approve the video? "${video.title}"? The video will be displayed publicly on the platform.`,
       onConfirm: async () => {
         try {
           await updateVideo({
@@ -117,9 +117,9 @@ const VideoManagement: React.FC = () => {
               status: 'approved'
             }
           }).unwrap();
-          console.log(`Video ${video.id} đã được phê duyệt`);
+          console.log(`Video ${video.id} has been approved`);
         } catch (error) {
-          console.error('Lỗi khi phê duyệt video:', error);
+          console.error('Error approving video:', error);
         }
       }
 
@@ -132,21 +132,21 @@ const VideoManagement: React.FC = () => {
     setConfirmationModal({
       isOpen: true,
       type: 'reject',
-      title: 'Từ chối video',
-      message: `Bạn có chắc chắn muốn từ chối video "${video.title}"? Video sẽ bị đánh dấu vi phạm và không được hiển thị.`,
+      title: 'Reject video',
+      message: `Are you sure you want to reject the video? "${video.title}"? The video will be marked as a violation and will not be displayed.`,
       onConfirm: async (reason) => {
         try {
           await updateVideo({
             id: video.id,
             data: { status: 'rejected' },
-          }).unwrap();  
-          console.log(`Video ${video.id} bị từ chối với lý do: ${reason}`);
+          }).unwrap();
+          console.log(`Video ${video.id} rejected for the following reasons: ${reason}`);
         } catch (error) {
-          console.error('Lỗi khi từ chối video:', error);
+          console.error('Error when rejecting video:', error);
         }
       },
       showReasonInput: true,
-      reasonPlaceholder: 'Ví dụ: Video chứa nội dung không phù hợp, vi phạm quy định cộng đồng...'
+      reasonPlaceholder: 'For example: Video contains inappropriate content, violates community regulations...'
     });
   };
 
@@ -156,14 +156,14 @@ const VideoManagement: React.FC = () => {
     setConfirmationModal({
       isOpen: true,
       type: 'delete',
-      title: 'Xóa video vĩnh viễn',
-      message: `Bạn có chắc chắn muốn xóa vĩnh viễn video "${video.title}"? Hành động này không thể hoàn tác.`,
+      title: 'Delete video permanently',
+      message: `Are you sure you want to permanently delete the video? "${video.title}"? This action cannot be undone.`,
       onConfirm: async () => {
         try {
           await deleteVideo(video.id).unwrap();
-          console.log(`Video ${video.id} đã bị xóa.`);
+          console.log(`Video ${video.id} has been deleted.`);
         } catch (error) {
-          console.error('Lỗi khi xóa video:', error);
+          console.error('Error while deleting video:', error);
         }
 
       }
@@ -174,8 +174,8 @@ const VideoManagement: React.FC = () => {
     setConfirmationModal({
       isOpen: true,
       type: 'remove',
-      title: 'Gỡ xuống video',
-      message: `Bạn có chắc chắn muốn gỡ xuống video "${video.title}"? Video sẽ không còn hiển thị công khai.`,
+      title: 'Take down video',
+      message: `Are you sure you want to take down the video? "${video.title}"? The video will no longer be publicly visible.`,
       onConfirm: async () => {
         try {
           await updateVideo({
@@ -183,9 +183,9 @@ const VideoManagement: React.FC = () => {
             data: { ...video, status: 'rejected' }
           }).unwrap();
 
-          console.log(`Video ${video.id} đã được gỡ xuống`);
+          console.log(`Video ${video.id} has been taken down`);
         } catch (error) {
-          console.error("Lỗi khi gỡ video:", error);
+          console.error("Error removing video:", error);
         }
       }
     });
@@ -201,8 +201,8 @@ const VideoManagement: React.FC = () => {
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 mt-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Kiểm duyệt Video</h2>
-          <p className="text-gray-600">Kiểm duyệt và quản lý nội dung video trên nền tảng</p>
+          <h2 className="text-2xl font-bold text-gray-900">Video Censorship</h2>
+          <p className="text-gray-600">Moderate and manage video content on the platform</p>
         </div>
       </div>
 
@@ -211,14 +211,14 @@ const VideoManagement: React.FC = () => {
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center space-x-2">
             <Filter size={18} className="text-gray-500" />
-            <span className="text-sm font-medium text-gray-700">Lọc theo trạng thái:</span>
+            <span className="text-sm font-medium text-gray-700">Filter by status:</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {[
-              { key: 'all', label: 'Tất cả', count: videos.length },
-              { key: 'pending', label: 'Chờ duyệt', count: videos.filter(v => v.status === 'pending').length },
-              { key: 'approved', label: 'Đã duyệt', count: videos.filter(v => v.status === 'approved').length },
-              { key: 'rejected', label: 'Vi phạm', count: videos.filter(v => v.status === 'rejected').length }
+              { key: 'all', label: 'All', count: videos.length },
+              { key: 'pending', label: 'Pending approval', count: videos.filter(v => v.status === 'pending').length },
+              { key: 'approved', label: 'Approved', count: videos.filter(v => v.status === 'approved').length },
+              { key: 'rejected', label: 'Violate', count: videos.filter(v => v.status === 'rejected').length }
             ].map(filter => (
               <button
                 key={filter.key}
@@ -258,12 +258,10 @@ const VideoManagement: React.FC = () => {
 
               <div className="flex items-center text-sm text-gray-500 mb-3">
                 <Clock size={14} className="mr-1" />
-                <span>{video.upload_date}</span>
-                <span className="mx-2">•</span>
-                <Eye size={14} className="mr-1" />              </div>
-
+                <span>{video.upload_date}</span>            
+              </div>
               <div className="flex items-center text-sm text-gray-600 mb-3">
-                <span>Tải lên bởi: {video.user_id}</span>
+                <span>Uploaded by: {video.user_id}</span>
               </div>
 
               <div className="flex flex-wrap gap-1 mb-4">
@@ -284,14 +282,14 @@ const VideoManagement: React.FC = () => {
                         className="flex items-center px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors"
                       >
                         <Check size={14} className="mr-1" />
-                        Duyệt
+                        Browse
                       </button>
                       <button
                         onClick={() => handleRejectVideo(video)}
                         className="flex items-center px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
                       >
                         <X size={14} className="mr-1" />
-                        Từ chối
+                        Refuse
                       </button>
                     </>
                   )}
@@ -301,7 +299,7 @@ const VideoManagement: React.FC = () => {
                       className="flex items-center px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700 transition-colors"
                     >
                       <X size={14} className="mr-1" />
-                      Gỡ xuống
+                      Take down
                     </button>
                   )}
                 </div>
@@ -310,27 +308,27 @@ const VideoManagement: React.FC = () => {
                   <button
                     onClick={() => handleViewVideo(video)}
                     className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                    title="Xem chi tiết"
+                    title="See details"
                   >
                     <Eye size={16} />
                   </button>
                   <button
                     onClick={() => handleEditVideo(video)}
                     className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded transition-colors"
-                    title="Chỉnh sửa"
+                    title="Edit"
                   >
                     <Edit size={16} />
                   </button>
                   <button
                     onClick={() => handleDeleteVideo(video)}
                     className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                    title="Xóa video"
+                    title="Delete video"
                   >
                     <Trash2 size={16} />
                   </button>
                   <button
                     className="p-2 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors"
-                    title="Báo cáo vi phạm"
+                    title="Report a violation"
                   >
                     <AlertTriangle size={16} />
                   </button>
@@ -365,10 +363,10 @@ const VideoManagement: React.FC = () => {
         showReasonInput={confirmationModal.showReasonInput}
         reasonPlaceholder={confirmationModal.reasonPlaceholder}
         confirmText={
-          confirmationModal.type === 'approve' ? 'Phê duyệt' :
-            confirmationModal.type === 'reject' ? 'Từ chối' :
-              confirmationModal.type === 'delete' ? 'Xóa vĩnh viễn' :
-                'Gỡ xuống'
+          confirmationModal.type === 'approve' ? 'Approve' :
+            confirmationModal.type === 'reject' ? 'Refuse' :
+              confirmationModal.type === 'delete' ? 'Permanently Deleted' :
+                'Take down'
         }
       />
     </div>
