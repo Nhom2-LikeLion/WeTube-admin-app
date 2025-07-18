@@ -1,23 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { managerApi } from "../services/api/managerApi.ts";
+import { channelApi } from '../services/api/channelApi.ts';
 import { videoApi } from "../services/api/videoApi.ts";
 import { authApi } from "../services/api/authApi.ts";
 
-
 export const store = configureStore({
-    reducer:{
-        //dangnhap 
-        
-        [managerApi.reducerPath]: managerApi.reducer,
-        [videoApi.reducerPath]: videoApi.reducer,
-        [authApi.reducerPath]: authApi.reducer,
-    },
-        middleware:(getDefaultMiddleware) =>
-            getDefaultMiddleware()
-                 .concat(managerApi.middleware)
-                 .concat(videoApi.middleware)
-                 .concat(authApi.middleware),
-})
+  reducer: {
+    [managerApi.reducerPath]: managerApi.reducer,
+    [channelApi.reducerPath]: channelApi.reducer,
+    [videoApi.reducerPath]: videoApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(managerApi.middleware)
+      .concat(channelApi.middleware)
+      .concat(videoApi.middleware)
+      .concat(authApi.middleware),
+});
+
 
 
 export type RootState = ReturnType<typeof store.getState>;

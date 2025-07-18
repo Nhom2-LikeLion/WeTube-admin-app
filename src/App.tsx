@@ -2,10 +2,11 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/layouts/Sidebar";
 import TopNav from "./components/layouts/TopNav";
-import DashboardPage from "./components/pages/DashboardPage";
+import { ManageVideosPage } from "./components/pages/ManageVideosPage";
 import { ManageChannelPage } from "./components/pages/ManageChannelPage";
 import { ManageManagersPage } from "./components/pages/ManageManagersPage";
 import { ViewStatsPage } from "./components/pages/ViewStatsPage";
+import DashboardPage from "./components/pages/DashboardPage";
 import VideoManagement from './components/pages/videoPage/VideoManagement';
 import LoginPage from './components/pages/authPage/LoginPage';
 import RequireRole from './components/pages/authPage/RequireRole'; // đường dẫn đúng tới file RequireRole.tsx
@@ -35,16 +36,16 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       {isAuthenticated && (
         <>
-          <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-20">
+          <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-50">
             <Sidebar />
           </div>
-          <div className="fixed top-0 left-64 right-0 bg-white z-10">
+          <div className="fixed top-0 left-64 right-0 bg-white z-40">
             <TopNav />
           </div>
         </>
       )}
 
-      <div className={isAuthenticated ? "ml-64 pt-16" : ""}>
+      <div className={isAuthenticated ? "ml-64 pt-16 min-h-screen" : ""}>
         <Routes>
           <Route path="/login" element={<LoginPage onLogin={() => setIsAuthenticated(true)} />} />
           <Route path="/" element={
