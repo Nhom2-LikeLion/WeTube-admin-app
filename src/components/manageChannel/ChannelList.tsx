@@ -2,6 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useGetAllChannelsQuery } from "../../services/api/channelApi";
 import type { IChannelListProps } from "../../types/channelTypes/channel";
 import { getErrorMessage } from "../../utils/helpers";
+import {
+  MdOutlineAttachMoney,
+  MdOutlineRemoveRedEye,
+  MdOutlineReportGmailerrorred,
+} from "react-icons/md";
+import { MdOutlinePeopleOutline } from "react-icons/md";
 
 export const ChannelList: React.FC<IChannelListProps> = ({
   filters,
@@ -233,16 +239,79 @@ export const ChannelList: React.FC<IChannelListProps> = ({
                     </h3>
                   </div>
 
-                  <p className="text-gray-600 text-sm mb-1">
-                    Email: {channel.email}
+                  <p className="text-gray-600 text-sm mb-1 ml-5">
+                    <span className="font-bold">Email: </span> {channel.email}
                   </p>
-                  {/* Shortened data display */}
-                  <p className="text-gray-600 text-sm mb-2">
-                    Revenue:{" "}
-                    <span className="font-medium text-blue-700">
-                      {channel.revenue.toLocaleString("en-US")} USD
-                    </span>
-                  </p>
+                  <div className="flex justify-around text-center border-t border-gray-200 pt-4">
+                    {/* Revenue */}
+                    <div className="flex flex-col items-center w-1/4">
+                      <div className="flex items-center text-gray-800 font-semibold text-sm">
+                        <MdOutlineAttachMoney
+                          className="h-4 w-4 mr-1 text-green-600"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        />
+
+                        {channel.revenue.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        })}
+                      </div>
+                      <p className="text-gray-600 text-sm font-bold">Revenue</p>
+                    </div>
+
+                    {/* Subscribers */}
+                    <div className="flex flex-col items-center w-1/4">
+                      <div className="flex items-center text-gray-800 font-semibold text-sm">
+                        <MdOutlinePeopleOutline
+                          className="h-4 w-4 mr-1 text-blue-600"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        />
+
+                        {channel.subscribers.toLocaleString("en-US", {
+                          notation: "compact",
+                          compactDisplay: "short",
+                        })}
+                      </div>
+                      <p className="text-gray-600 text-sm font-bold">
+                        Subscribers
+                      </p>
+                    </div>
+
+                    {/* Views */}
+                    <div className="flex flex-col items-center w-1/4">
+                      <div className="flex items-center text-gray-800 font-semibold text-sm">
+                        <MdOutlineRemoveRedEye
+                          className="h-4 w-4 mr-1 text-purple-600"
+                          viewBox="0 0 20 25"
+                          fill="currentColor"
+                        />
+
+                        {channel.views.toLocaleString("en-US", {
+                          notation: "compact",
+                          compactDisplay: "short",
+                        })}
+                      </div>
+                      <p className="text-gray-600 text-sm font-bold">Views</p>
+                    </div>
+
+                    {/* Reports */}
+                    <div className="flex flex-col items-center w-1/4">
+                      <div className="flex items-center text-gray-800 font-semibold text-sm">
+                        <MdOutlineReportGmailerrorred
+                          className="h-4 w-4 mr-1 text-red-600"
+                          viewBox="0 0 22 22"
+                          fill="currentColor"
+                        />
+
+                        {channel.reports.toLocaleString()}
+                      </div>
+                      <p className="text-gray-600 text-sm font-bold">Reports</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
