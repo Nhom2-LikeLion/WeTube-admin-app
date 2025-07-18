@@ -1,12 +1,34 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/layouts/Sidebar";
 import TopNav from "./components/layouts/TopNav";
 import DashboardPage from "./components/pages/DashboardPage";
 import { ManageChannelPage } from "./components/pages/ManageChannelPage";
 import { ManageManagersPage } from "./components/pages/ManageManagersPage";
-import VideoManagement from "./components/pages/videoPage/VideoManagement";
+import { ViewStatsPage } from "./components/pages/ViewStatsPage";
+import  VideoManagement   from './components/pages/videoPage/VideoManagement';
 
 function App() {
+  const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // Nếu chưa login mà không phải trang login -> chuyển về login
+  if (!isAuthenticated && location.pathname !== "/login") {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Nếu đã login mà đang ở trang login -> chuyển về /
+  if (isAuthenticated && location.pathname === "/login") {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 ">
       <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-20">
@@ -18,14 +40,26 @@ function App() {
         </div>
         <div className="ml-64 pt-16 min-h-screen">
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/manage-videos" element={<VideoManagement />} />
-            <Route path="/manage-channels" element={<ManageChannelPage />} />
-            <Route path="/manage-managers" element={<ManageManagersPage />} />
-            {/* <Route
+            <Route
+              path="/"
+              element={<DashboardPage />}
+            />
+            <Route
+              path="/manage-videos"
+              element={<VideoManagement />}
+            />
+            <Route
+              path="/manage-channels"
+              element={<ManageChannelPage />}
+            />
+            <Route
+              path="/manage-managers"
+              element={<ManageManagersPage />}
+            />
+            <Route
               path="/view-stats"
               element={<ViewStatsPage />}
-            /> */}
+            />
           </Routes>
         </div>
       </div>

@@ -21,10 +21,10 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   title,
   message,
   type,
-  confirmText = 'Xác nhận',
-  cancelText = 'Hủy',
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   showReasonInput = false,
-  reasonPlaceholder = 'Nhập lý do...'
+  reasonPlaceholder = 'Enter reason...'
 }) => {
   const [reason, setReason] = React.useState('');
   const [reasonError, setReasonError] = React.useState('');
@@ -75,7 +75,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
   const handleConfirm = () => {
     if (showReasonInput && !reason.trim()) {
-      setReasonError('Vui lòng nhập lý do từ chối');
+      setReasonError('Please provide a reason for rejection');
       return;
     }
     onConfirm(reason.trim() || undefined);
@@ -109,11 +109,11 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             {message}
           </p>
 
-          {/* Reason Input for Rejection */}
+          {/* Reason Input */}
           {showReasonInput && (
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Lý do từ chối <span className="text-red-500">*</span>
+                Rejection reason <span className="text-red-500">*</span>
               </label>
               <textarea
                 value={reason}
@@ -131,7 +131,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 <p className="mt-1 text-sm text-red-600">{reasonError}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                Lý do này sẽ được gửi đến người dùng để họ hiểu tại sao video bị từ chối
+                This reason will be sent to the user to explain why their video was rejected
               </p>
             </div>
           )}

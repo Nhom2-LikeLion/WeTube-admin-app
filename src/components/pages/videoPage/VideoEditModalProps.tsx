@@ -54,11 +54,11 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0  bg-opacity-50 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-opacity-50 backdrop-blur-md flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full p-4 overflow-y-auto max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Chỉnh sửa Video</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Edit Video</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -76,6 +76,7 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
               className="w-32 h-20 object-cover rounded-lg"
             />
             <div>
+<<<<<<< HEAD
               <p className="text-sm text-gray-500">
                 Video ID: {editedVideo.id}
               </p>
@@ -85,13 +86,18 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
               <p className="text-sm text-gray-500">
                 Người tải: {editedVideo.user_id}
               </p>
+=======
+              <p className="text-sm text-gray-500">Video ID: {editedVideo.id}</p>
+              <p className="text-sm text-gray-500">Duration: {editedVideo.duration_seconds}</p>
+              <p className="text-sm text-gray-500">Uploader: {editedVideo.user_id}</p>
+>>>>>>> a363cefb7061dbe24e92b3183f0a255fa9b7f3ff
             </div>
           </div>
 
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tiêu đề video
+              Video Title
             </label>
             <input
               type="text"
@@ -100,14 +106,14 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
                 setEditedVideo({ ...editedVideo, title: e.target.value })
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Nhập tiêu đề video..."
+              placeholder="Enter video title..."
             />
           </div>
 
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Mô tả video
+              Video Description
             </label>
             <textarea
               value={editedVideo.description || ""}
@@ -116,14 +122,14 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
               }
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Nhập mô tả video..."
+              placeholder="Enter video description..."
             />
           </div>
 
           {/* Status */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Trạng thái
+              Status
             </label>
             <select
               value={editedVideo.status}
@@ -135,9 +141,9 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="pending">Chờ duyệt</option>
-              <option value="approved">Đã phê duyệt</option>
-              <option value="rejected">Vi phạm</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
             </select>
           </div>
 
@@ -155,14 +161,14 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
                   onChange={(e) => setNewTag(e.target.value)}
                   onKeyPress={handleKeyPress}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Thêm tag mới..."
+                  placeholder="Add a new tag..."
                 />
                 <button
                   onClick={addTag}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
                 >
                   <Plus size={16} className="mr-1" />
-                  Thêm
+                  Add
                 </button>
               </div>
 
@@ -190,7 +196,7 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
           {/* Thumbnail URL */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              URL Thumbnail
+              Thumbnail URL
             </label>
             <input
               type="url"
@@ -212,14 +218,14 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({
               onClick={onClose}
               className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              Hủy
+              Cancel
             </button>
             <button
               onClick={handleSave}
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
             >
               <Save size={16} className="mr-2" />
-              Lưu thay đổi
+              Save Changes
             </button>
           </div>
         </div>
