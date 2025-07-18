@@ -1,7 +1,14 @@
-import { LayoutDashboard, Play, Settings, Users, Video } from "lucide-react";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import {
+  Video,
+  BarChart3,
+  Users,
+  Settings,
+  Play,
+  LayoutDashboard,
+} from "lucide-react";
 import type { INavItem } from "../../types/navItemTypes";
+import { NavLink } from "react-router-dom";
 
 const navItems: INavItem[] = [
   {
@@ -29,18 +36,21 @@ const navItems: INavItem[] = [
     icon: Users,
     to: "/manage-managers",
   },
-  // {
-  //   id: "view-stats",
-  //   label: "View Statistics",
-  //   icon: BarChart3,
-  //   to: "/view-stats",
-  // },
+  {
+    id: "view-stats",
+    label: "View Statistics",
+    icon: BarChart3,
+    to: "/view-stats",
+  },
 ];
 
 const Sidebar: React.FC = () => {
   const renderNavItem = (item: INavItem) => {
     return (
-      <div key={item.id} className="mb-1">
+      <div
+        key={item.id}
+        className="mb-1"
+      >
         <NavLink
           to={item.to}
           className={({ isActive }) =>

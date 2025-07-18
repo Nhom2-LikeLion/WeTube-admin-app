@@ -34,7 +34,7 @@ const ProductPerformance = () => {
   return (
     <div className="p-4 bg-white rounded shadow">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
-        <h2 className="text-lg font-semibold">Videos Performance</h2>
+        <h2 className="text-lg font-semibold">Channels Performance</h2>
 
         <input
           type="text"
