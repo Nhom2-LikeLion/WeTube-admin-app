@@ -1,18 +1,18 @@
-import React, { useState, useCallback, type FormEvent } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useCallback, useEffect, type FormEvent } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useAddManagerMutation,
   useDeleteManagerMutation,
   useGetManagersQuery,
   useUpdateManagerInfoMutation,
+  useRejectManagerMutation,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";
 import ManagerInfoPage from "../features/manager/ManagerInfo";
-import type { FormData } from "../../types/managerTypes/managerVideo";
+import type { FormData } from "../../types/managerTypes/registerManager";
 import { AddManagerForm } from "../features/manager/AddManagerForm";
 import { UpdateManagerForm } from "../features/manager/UpdateManagerForm";
 import { ManagerList } from "../features/manager/ManagerList";
-
 import ReportCharts from "../features/manager/ReportCharts";
 
 const Modal: React.FC<{
@@ -38,6 +38,7 @@ const Modal: React.FC<{
 
 export const ManageManagersPage: React.FC = () => {
   const { managerId } = useParams<{ managerId?: string }>();
+  const navigate = useNavigate();
   const [selectedManagerId, setSelectedManagerId] = useState<string | null>(managerId || null);
   const [formState, setFormState] = useState<{
     showAddForm: boolean;
@@ -53,15 +54,9 @@ export const ManageManagersPage: React.FC = () => {
       phone: "",
       password: "",
       confirmPassword: "",
-      address: "",
       gender: "male",
       dateOfBirth: "",
       status: "Pending",
-      dailyReports: 0,
-      weeklyReports: 0,
-      monthlyReports: 0,
-      processedReports: 0,
-      unprocessedReports: 0,
     },
     managerInfo: {
       name: "",
@@ -69,15 +64,9 @@ export const ManageManagersPage: React.FC = () => {
       phone: "",
       password: "",
       confirmPassword: "",
-      address: "",
       gender: "male",
       dateOfBirth: "",
       status: "Pending",
-      dailyReports: 0,
-      weeklyReports: 0,
-      monthlyReports: 0,
-      processedReports: 0,
-      unprocessedReports: 0,
     },
   });
 
@@ -89,12 +78,30 @@ export const ManageManagersPage: React.FC = () => {
   const [addManager, { isLoading: isAdding }] = useAddManagerMutation();
   const [deleteManager] = useDeleteManagerMutation();
   const [updateManagerInfo, { isLoading: isUpdating }] = useUpdateManagerInfoMutation();
+  const [rejectManager, { isLoading: isRejecting }] = useRejectManagerMutation();
+
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleResize = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) {
+        setFormState((prev) => ({
+          ...prev,
+          showAddForm: false,
+          showUpdateForm: false,
+        }));
+      }
+    };
+    handleResize(mediaQuery);
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
 
   const selectedManager = managers.find((manager) => manager.id === selectedManagerId);
 
   const renderLoadingOrError = () => {
-    if (isManagersLoading) return <p className="text-center text-gray-600">Đang tải danh sách quản lý...</p>;
-    if (managersError) return <p className="text-center text-red-600">Có lỗi xảy ra khi tải danh sách quản lý!</p>;
+    if (isManagersLoading) return <p className="text-center text-gray-600">Loading manager list...</p>;
+    if (managersError) return <p className="text-center text-red-600">An error occurred while loading the manager list!</p>;
     return null;
   };
 
@@ -106,12 +113,12 @@ export const ManageManagersPage: React.FC = () => {
         !formState.newManager.email ||
         formState.newManager.password !== formState.newManager.confirmPassword
       ) {
-        toast.error("Vui lòng kiểm tra thông tin hợp lệ!");
+        toast.error("Please check the validity of the information!");
         return;
       }
       try {
         await addManager(formState.newManager).unwrap();
-        toast.success("Thêm quản lý thành công!");
+        toast.success("Manager added successfully!");
         setFormState((prev) => ({
           ...prev,
           showAddForm: false,
@@ -125,18 +132,10 @@ export const ManageManagersPage: React.FC = () => {
             gender: "male",
             dateOfBirth: "",
             status: "Pending",
-            timestamp: "",
-            visitCount: 0,
-            revenue: 0,
-            dailyReports: 0,
-            weeklyReports: 0,
-            monthlyReports: 0,
-            processedReports: 0,
-            unprocessedReports: 0,
           },
         }));
       } catch {
-        toast.error("Thêm quản lý thất bại!");
+        toast.error("Failed to add manager!");
       }
     },
     [addManager, formState.newManager]
@@ -144,23 +143,68 @@ export const ManageManagersPage: React.FC = () => {
 
   const handleDeleteManager = useCallback(
     async (id: string) => {
-      if (!window.confirm("Bạn có chắc muốn xóa quản lý này?")) return;
+      if (!window.confirm("Are you sure you want to delete this manager?")) return;
       try {
         await deleteManager(id).unwrap();
-        toast.success("Xóa quản lý thành công!");
+        toast.success("Manager deleted successfully!");
         if (selectedManagerId === id) setSelectedManagerId(null);
       } catch {
-        toast.error("Xóa quản lý thất bại!");
+        toast.error("Failed to delete manager!");
       }
     },
     [deleteManager, selectedManagerId]
+  );
+
+  const handleEditManager = useCallback(
+    (id: string) => {
+      const manager = managers.find((m) => m.id === id);
+      if (manager) {
+        setFormState((prev) => ({
+          ...prev,
+          showUpdateForm: true,
+          managerInfo: {
+            name: manager.name,
+            email: manager.email,
+            phone: manager.phone || "",
+            password: "",
+            confirmPassword: "",
+            address: "",
+            gender: manager.gender,
+            dateOfBirth: manager.dateOfBirth || "",
+            status: manager.status,
+            dailyReports: manager.dailyReports || 0,
+            processedReports: manager.processedReports || 0,
+            unprocessedReports: manager.unprocessedReports || 0,
+          },
+        }));
+      }
+    },
+    [managers]
+  );
+
+  const handleBanManager = useCallback(
+    async (id: string) => {
+      if (isRejecting) return;
+      if (!window.confirm("Are you sure you want to ban this manager?")) return;
+      try {
+        await rejectManager(id).unwrap();
+        toast.success("Manager banned successfully!");
+        if (selectedManagerId === id) {
+          setSelectedManagerId(null);
+          navigate("/managers");
+        }
+      } catch {
+        toast.error("Failed to ban manager!");
+      }
+    },
+    [rejectManager, isRejecting, selectedManagerId, navigate]
   );
 
   const handleUpdateManagerInfo = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       if (!selectedManagerId || !formState.managerInfo.name || !formState.managerInfo.email) {
-        toast.error("Vui lòng chọn quản lý và điền đầy đủ thông tin");
+        toast.error("Please select a manager and fill in all required information!");
         return;
       }
       try {
@@ -168,10 +212,10 @@ export const ManageManagersPage: React.FC = () => {
           id: selectedManagerId,
           data: formState.managerInfo,
         }).unwrap();
-        toast.success("Cập nhật thông tin quản lý thành công!");
+        toast.success("Manager information updated successfully!");
         setFormState((prev) => ({ ...prev, showUpdateForm: false }));
       } catch {
-        toast.error("Cập nhật thông tin quản lý thất bại!");
+        toast.error("Failed to update manager information!");
       }
     },
     [updateManagerInfo, selectedManagerId, formState.managerInfo]
@@ -180,12 +224,12 @@ export const ManageManagersPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Quản lý Manager</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Manage Managers</h1>
         <button
           onClick={() => setFormState((prev) => ({ ...prev, showAddForm: !prev.showAddForm }))}
           className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
         >
-          {formState.showAddForm ? "Đóng" : "Tạo mới"}
+          {formState.showAddForm ? "Close" : "Create New"}
         </button>
       </div>
 
@@ -205,8 +249,8 @@ export const ManageManagersPage: React.FC = () => {
                 selectedManagerId={selectedManagerId}
                 onSelect={setSelectedManagerId}
                 onDelete={handleDeleteManager}
-                onApprove={() => {}}
-                onReject={() => {}}
+                onEdit={handleEditManager}
+                onBanned={handleBanManager}
               />
             </div>
             {selectedManagerId && (
