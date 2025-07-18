@@ -13,7 +13,7 @@ interface StatCardProps {
   value: string;
   change: string;
   changeType: "up" | "down";
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   color: string;
 }
 

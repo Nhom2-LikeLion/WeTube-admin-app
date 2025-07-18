@@ -1,7 +1,3 @@
-import React from 'react'
-
 export const AppRoutes = () => {
-  return (
-    <div>AppRoutes</div>
-  )
-}
+  return <div>AppRoutes</div>;
+};

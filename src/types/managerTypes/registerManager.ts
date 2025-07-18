@@ -7,7 +7,7 @@ export interface FormData {
   confirmPassword: string;
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
-  status: 'Pending';
+  status: 'Pending' | 'Approved' | 'Rejected' | 'Banned';
   dailyReports?: number;      
   processedReports?: number;  
   unprocessedReports?: number;

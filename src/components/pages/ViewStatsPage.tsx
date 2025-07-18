@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const ViewStatsPage = () => {
   return (
     <div className="p-6">
@@ -7,4 +5,4 @@ export const ViewStatsPage = () => {
       <p className="mt-4 text-gray-600">ViewStatsPage.</p>
     </div>
   );
-}
+};
