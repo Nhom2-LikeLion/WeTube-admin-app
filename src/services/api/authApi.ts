@@ -23,6 +23,7 @@ export const authApi = createApi({
     }),
   }),
 });
+;
 
 // Export query hook (changed from mutation to query)
 export const {
