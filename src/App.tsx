@@ -2,14 +2,13 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/layouts/Sidebar";
 import TopNav from "./components/layouts/TopNav";
-import { ManageVideosPage } from "./components/pages/ManageVideosPage";
 import { ManageChannelPage } from "./components/pages/ManageChannelPage";
 import { ManageManagersPage } from "./components/pages/ManageManagersPage";
 import { ViewStatsPage } from "./components/pages/ViewStatsPage";
 import DashboardPage from "./components/pages/DashboardPage";
 import VideoManagement from './components/pages/videoPage/VideoManagement';
 import LoginPage from './components/pages/authPage/LoginPage';
-import RequireRole from './components/pages/authPage/RequireRole'; // đường dẫn đúng tới file RequireRole.tsx
+import RequireRole from './components/pages/authPage/RequireRole';
 
 function App() {
   const location = useLocation();
@@ -22,12 +21,10 @@ function App() {
     }
   }, []);
 
-  // Nếu chưa login mà không phải trang login -> chuyển về login
   if (!isAuthenticated && location.pathname !== "/login") {
     return <Navigate to="/login" replace />;
   }
 
-  // Nếu đã login mà đang ở trang login -> chuyển về /
   if (isAuthenticated && location.pathname === "/login") {
     return <Navigate to="/" replace />;
   }
