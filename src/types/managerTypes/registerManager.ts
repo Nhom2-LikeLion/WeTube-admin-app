@@ -5,8 +5,10 @@ export interface FormData {
   phone: string;
   password: string;
   confirmPassword: string;
-  address: string;
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
   status: 'Pending';
+  dailyReports?: number;      
+  processedReports?: number;  
+  unprocessedReports?: number;
 }

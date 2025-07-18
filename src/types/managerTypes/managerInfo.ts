@@ -9,11 +9,11 @@ export interface managerData {
   dateOfBirth: string;
   gender: 'male' | 'female' | 'other';
   status: 'Pending' | 'Approved' | 'Rejected'| 'Banned';
-  dailyReports?: number;      // Số lượng báo cáo theo ngày
-  processedReports?: number;  // Số lượng báo cáo đã xử lý
+  dailyReports?: number;      
+  processedReports?: number;  
   unprocessedReports?: number;
-  recentProcessedReports?: Report[]; // Danh sách 3 báo cáo đã xử lý gần đây
-  recentProcessedVideos?: Video[]; // Số lượng báo cáo chưa xử lý
+  recentProcessedReports?: Report[];
+  recentProcessedVideos?: Video[]; 
 }
 export interface Report {
   id: string;
