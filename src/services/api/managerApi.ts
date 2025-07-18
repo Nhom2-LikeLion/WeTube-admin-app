@@ -1,27 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { ManagerInfo } from "../../types/managerTypes/managerInfo";
+import type { managerData } from "../../types/managerTypes/managerInfo";
 
 export const managerApi = createApi({
   reducerPath: "managerApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://687076897ca4d06b34b6db6f.mockapi.io/api/v1/",
   }),
-  tagTypes: ["ManagerInfo", "ManagerReports", "ManagerVideos", "Managers"],
+  tagTypes: ["ManagerInfo", "ManagerVideos", "Managers"],
   endpoints: (builder) => ({
     // Lấy danh sách Managers
-    getManagers: builder.query<ManagerInfo[], void>({
+    getManagers: builder.query<managerData[], void>({
       query: () => "Manager",
       providesTags: ["Managers"],
     }),
 
     // Lấy thông tin một Manager
-    getManagerInfo: builder.query<ManagerInfo, string>({
+    getManagerInfo: builder.query<managerData, string>({
       query: (id) => `Manager/${id}`,
       providesTags: ["ManagerInfo"],
     }),
 
     // Thêm Manager
-    addManager: builder.mutation<ManagerInfo, Partial<ManagerInfo>>({
+    addManager: builder.mutation<managerData, Partial<managerData>>({
       query: (data) => ({
         url: "Manager",
         method: "POST",
@@ -32,8 +32,8 @@ export const managerApi = createApi({
 
     // Cập nhật thông tin Manager
     updateManagerInfo: builder.mutation<
-      ManagerInfo,
-      { id: string; data: Partial<ManagerInfo> }
+      managerData,
+      { id: string; data: Partial<managerData> }
     >({
       query: ({ id, data }) => ({
         url: `Manager/${id}`,
