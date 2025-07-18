@@ -2,55 +2,58 @@ import React, { useState, useEffect } from 'react';
 import {
   Eye, EyeOff, Shield, Video, Lock, User, AlertCircle
 } from 'lucide-react';
-import { useAuthQuery } from '../../../services/api/authApi'; // Auth API hook
+import { useAuthQuery } from '../../../services/api/authApi'; // Changed to query hook
 import ForgotPasswordPage from './ForgotPasswordPage';
 
 interface LoginPageProps {
   onLogin: (data: { email: string; role: string }) => void;
 }
 
-/**
- * LoginPage Component
- * - Displays the login form
- * - Validates input fields
- * - Handles login logic using useAuthQuery
- * - Supports switching to ForgotPasswordPage
- */
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const [triggerLogin, setTriggerLogin] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
+  const [shouldAuth, setShouldAuth] = useState(false);
 
-  // Call auth API only when triggerLogin is true
-  const { data, isLoading } = useAuthQuery(formData, {
-    skip: !triggerLogin,
-  });
+  // Use query hook with skip option
+  const { data, isLoading, error } = useAuthQuery(
+    { email: formData.email, password: formData.password },
+    { skip: !shouldAuth }
+  );
 
-  // Handle login response
   useEffect(() => {
-    if (data && data.length > 0) {
-      const user = data[0];
-      onLogin({ email: user.email, role: user.role });
-      localStorage.setItem('user', JSON.stringify(user));
-    } else if (data && data.length === 0) {
-      setErrors({ general: 'Invalid email or password' });
-      setTriggerLogin(false);
+    if (shouldAuth && data) {
+      if (data.length > 0) {
+        const user = data[0];
+        onLogin({ email: user.email, role: user.role });
+        localStorage.setItem('user', JSON.stringify(user));
+        setShouldAuth(false); // Reset auth state
+      } else {
+        setErrors({ general: 'Invalid email or password' });
+        setShouldAuth(false);
+      }
     }
-  }, [data, onLogin]);
+  }, [data, onLogin, shouldAuth]);
 
-  // Handle input changes
+  useEffect(() => {
+    if (shouldAuth && error) {
+      console.error("Login error:", error);
+      setErrors({ general: 'Login failed. Please try again.' });
+      setShouldAuth(false);
+    }
+  }, [error, shouldAuth]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     setErrors(prev => ({ ...prev, [name]: undefined }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: typeof errors = {};
+    
     if (!formData.email.trim()) newErrors.email = 'Please enter your email';
     if (!formData.password.trim()) newErrors.password = 'Please enter your password';
 
@@ -60,10 +63,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     }
 
     setErrors({});
-    setTriggerLogin(true);
+    setShouldAuth(true); // Trigger the query
   };
 
-  // Show forgot password page
+  const handleForgotPassword = () => {
+    setErrors({});
+    setShowForgotPassword(true);
+  };
+
   if (showForgotPassword) {
     return <ForgotPasswordPage onBackToLogin={() => setShowForgotPassword(false)} />;
   }
@@ -93,7 +100,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
             <h2 className="text-xl font-semibold text-gray-900 text-center mb-6">Login to the system</h2>
 
-            {/* General error */}
             {errors.general && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
                 <AlertCircle size={16} className="text-red-600 mr-2" />
@@ -101,9 +107,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </div>
             )}
 
-            {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                 <div className="relative">
@@ -115,9 +119,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border rounded-lg ${
-                      errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                    }`}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg ${errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
                     placeholder="Enter your email"
                     disabled={isLoading}
                   />
@@ -125,7 +127,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
               </div>
 
-              {/* Password */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <div className="relative">
@@ -137,9 +138,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-12 py-3 border rounded-lg ${
-                      errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                    }`}
+                    className={`w-full pl-10 pr-12 py-3 border rounded-lg ${errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
                     placeholder="Enter your password"
                     disabled={isLoading}
                   />
@@ -154,7 +153,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
               </div>
 
-              {/* Options */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center">
                   <input type="checkbox" className="h-4 w-4 text-blue-600 rounded" />
@@ -162,14 +160,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 </label>
                 <button
                   type="button"
-                  onClick={() => setShowForgotPassword(true)}
+                  onClick={handleForgotPassword}
                   className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                 >
                   Forgot password?
                 </button>
               </div>
 
-              {/* Submit button */}
               <button
                 type="submit"
                 disabled={isLoading}
@@ -179,20 +176,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </button>
             </form>
 
-            {/* Demo credentials */}
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="text-xs text-gray-600 text-center mb-2">
                 <strong>Demo:</strong>
               </p>
               <p className="text-xs text-gray-500 text-center">
-                Email: <code className="bg-gray-200 px-1 rounded">admin@example.com</code> | 
+                Email: <code className="bg-gray-200 px-1 rounded">admin@example.com</code> |
                 Password: <code className="bg-gray-200 px-1 rounded">123456</code>
               </p>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
         <div className="text-center mt-6 text-white text-sm opacity-75">
           © 2024 WebTube
         </div>

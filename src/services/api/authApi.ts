@@ -5,30 +5,26 @@ import type { AuthInfo } from "../../types/userManager/authInfo";
  * RTK Query API slice for authentication-related requests
  */
 export const authApi = createApi({
-    reducerPath: "authApi", // Unique key for storing reducer state in the store
+  reducerPath: "authApi",
 
-    baseQuery: fetchBaseQuery({
-        baseUrl: "https://68762e68814c0dfa653b06a0.mockapi.io", // Base URL for all requests
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://68762e68814c0dfa653b06a0.mockapi.io",
+  }),
+
+  tagTypes: ["authInfos", "auth"],
+
+  endpoints: (builder) => ({
+    // Changed to use GET method to fetch admins and filter by email/password
+    Auth: builder.query<AuthInfo[], { email: string; password: string }>({
+      query: ({ email, password }) => ({
+        url: `/admins?email=${email}&password=${password}`,
+        method: "GET",
+      }),
     }),
-
-    tagTypes: ["authInfos", "auth"], // Tags for automatic cache invalidation and refetching
-
-    endpoints: (builder) => ({
-        /**
-         * Query to authenticate admin users by email and password
-         * 
-         * @param email - User email
-         * @param password - User password
-         * @returns List of matched admin accounts
-         */
-        Auth: builder.query<AuthInfo[], { email: string; password: string }>({
-            query: ({ email, password }) =>
-                `/admins?email=${email}&password=${password}`, // Example: /admins?email=test@mail.com&password=1234
-        }),
-    }),
+  }),
 });
 
-// Exporting hook for component usage
+// Export query hook (changed from mutation to query)
 export const {
-    useAuthQuery, // Usage: const { data, error, isLoading } = useAuthQuery({ email, password })
+  useAuthQuery,
 } = authApi;
