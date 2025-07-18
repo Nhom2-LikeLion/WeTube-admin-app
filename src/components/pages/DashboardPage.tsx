@@ -5,7 +5,7 @@ import TotalRevenueChart from "../features/sections/total-revenue/TotalRevenueCh
 import { UsersInsightsChart } from "../features/sections/users-insights/UsersInsightsChart";
 import SalesMapping from "../features/sections/users-mapping/SalesMapping";
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
     <div className="grid grid-cols-12 gap-6">
       {/* xs=12            xl=7 */}
@@ -41,4 +41,5 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
+
