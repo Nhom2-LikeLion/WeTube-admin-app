@@ -3,12 +3,7 @@
 import * as React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
   ChartContainer,
@@ -162,7 +157,10 @@ export function UsersInsightsChart() {
         <div className="grid flex-1 gap-1">
           <CardTitle>Users</CardTitle>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select
+          value={timeRange}
+          onValueChange={setTimeRange}
+        >
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
             aria-label="Select a value"
@@ -170,13 +168,22 @@ export function UsersInsightsChart() {
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
+            <SelectItem
+              value="90d"
+              className="rounded-lg"
+            >
               Last 3 months
             </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
+            <SelectItem
+              value="30d"
+              className="rounded-lg"
+            >
               Last 30 days
             </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
+            <SelectItem
+              value="7d"
+              className="rounded-lg"
+            >
               Last 7 days
             </SelectItem>
           </SelectContent>
@@ -189,7 +196,13 @@ export function UsersInsightsChart() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillNormal" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="fillNormal"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop
                   offset="5%"
                   stopColor="var(--color-normal)"
@@ -201,7 +214,13 @@ export function UsersInsightsChart() {
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillPro" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="fillPro"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop
                   offset="5%"
                   stopColor="var(--color-pro)"
@@ -232,12 +251,12 @@ export function UsersInsightsChart() {
             />
 
             <YAxis
-                          tickLine={false}
-                          tickMargin={10}
-                          axisLine={false}
-                          domain={[0, maxValue]}
-                          tickFormatter={(value) => `${value}`}
-                        />
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              domain={[0, maxValue]}
+              tickFormatter={(value) => `${value}`}
+            />
 
             <ChartTooltip
               cursor={false}

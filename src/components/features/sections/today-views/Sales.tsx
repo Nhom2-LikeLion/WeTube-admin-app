@@ -1,50 +1,76 @@
-import { Icon } from '@iconify/react';          // hoặc IconifyIcon wrapper cũ
-import { sales } from '../../../../data/sales';
-import SaleCard from './SaleCard';
-
-const Sales = () => {
+const TopProductRow = ({
+  product,
+}: {
+  product: { id: number; name: string; sub: string };
+}) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm pt-6 pb-8 px-8">
-      
-      <div className="flex items-center justify-between mb-10">
-        <div>
-          
-          <h4 className="text-2xl font-semibold mb-1">Today's Summary</h4>
-
+    <tr className="border-b">
+      <td className="py-3 px-4 font-medium text-sm text-gray-700">
+        {product.id}
+      </td>
+      <td className="py-3 px-4 whitespace-nowrap text-center text-sm text-gray-800">
+        {product.name}
+      </td>
+      <td className="py-4 px-4 text-right text-sm text-gray-800">
+        {product.sub}
+      </td>
+      {/* <td className="py-3 px-4">
+        <div className="w-44 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+          <div
+            className={`${product.sub} h-full rounded-full`}
+            style={{ width: `${product.sales}%` }}
+          ></div>
         </div>
-
-        
-        <button
-          type="button"
-          className="
-            inline-flex items-center gap-2
-            border border-primary-600 text-primary-600
-            hover:bg-primary-50
-            px-4 py-2 rounded-md text-sm font-medium
-            transition-colors
-          "
+      </td> */}
+      {/* <td className="py-3 px-4">
+        <span
+          className={`text-xs font-medium px-2 py-0.5 border rounded-full ${product.sub} text-white`}
         >
-          <Icon icon="solar:upload-linear" className="w-5 h-5" />
-          Export
-        </button>
-      </div>
+          {product.sales}%
+        </span>
+      </td> */}
+    </tr>
+  );
+};
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-4
-          gap-8         /* ≈ spacing={3.875} (31 px)  */
-          xl:gap-5      /* ≈ spacing={2} (16 px) khi ≥1280px */
-        "
-      >
-        {sales.map((item) => (
-          <SaleCard key={item.label} item={item} />
-        ))}
+const topProducts = [
+  { id: 1, name: "Channel A", sub: "1M2" },
+  { id: 2, name: "Channel B", sub: "500K" },
+  { id: 3, name: "Channel C", sub: "350K" },
+  { id: 4, name: "Channel D", sub: "120K" },
+  { id: 5, name: "Channel D", sub: "256K" },
+];
+
+const TopProducts = () => {
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-sm">
+      <h4 className="text-lg font-semibold text-gray-900 mb-4">Top Channels</h4>
+
+      <div className="overflow-auto">
+        <table className="min-w-full text-left text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="py-3 px-4 font-medium text-gray-600">#</th>
+              <th className="py-3 px-4 font-medium text-gray-600 text-center">
+                Name
+              </th>
+              <th className="py-3 px-4 font-medium text-gray-600 text-right">
+                Subscribers
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white">
+            {topProducts.map((product) => (
+              <TopProductRow
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default Sales;
+export default TopProducts;

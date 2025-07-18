@@ -21,7 +21,10 @@ const SaleCard = ({ item }: { item: SaleItem }) => {
         {SvgIcon ? (
           <SvgIcon className="w-6 h-6 text-white" />
         ) : icon ? (
-          <Icon icon={icon} className="w-5 h-5 text-white" />
+          <Icon
+            icon={icon}
+            className="w-5 h-5 text-white"
+          />
         ) : null}
       </div>
 

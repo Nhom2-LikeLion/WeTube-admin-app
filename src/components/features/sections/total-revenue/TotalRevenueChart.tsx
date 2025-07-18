@@ -3,12 +3,7 @@
 import * as React from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
   ChartContainer,
@@ -157,7 +152,10 @@ export default function TotalRevenueChart() {
     <Card>
       <CardHeader>
         <CardTitle>Total Revenue</CardTitle>
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select
+          value={timeRange}
+          onValueChange={setTimeRange}
+        >
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
             aria-label="Select a value"
@@ -165,13 +163,22 @@ export default function TotalRevenueChart() {
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
+            <SelectItem
+              value="90d"
+              className="rounded-lg"
+            >
               Last 3 months
             </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
+            <SelectItem
+              value="30d"
+              className="rounded-lg"
+            >
               Last 30 days
             </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
+            <SelectItem
+              value="7d"
+              className="rounded-lg"
+            >
               Last 7 days
             </SelectItem>
           </SelectContent>
@@ -179,7 +186,10 @@ export default function TotalRevenueChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={filteredData}>
+          <BarChart
+            accessibilityLayer
+            data={filteredData}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -217,9 +227,21 @@ export default function TotalRevenueChart() {
                 />
               }
             />
-            <Bar dataKey="ads" fill="#6366F1" radius={4} />
-            <Bar dataKey="pro" fill="#EF4444" radius={4} />
-            <Bar dataKey="mem" fill="#42e35dff" radius={4} />
+            <Bar
+              dataKey="ads"
+              fill="#6366F1"
+              radius={4}
+            />
+            <Bar
+              dataKey="pro"
+              fill="#EF4444"
+              radius={4}
+            />
+            <Bar
+              dataKey="mem"
+              fill="#42e35dff"
+              radius={4}
+            />
           </BarChart>
         </ChartContainer>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 w-full">
