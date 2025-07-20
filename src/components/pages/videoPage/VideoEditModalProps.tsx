@@ -6,7 +6,7 @@ interface VideoEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   video: VideoInfo | null;
-  onSave: (updatedVideo: any) => void;
+  onSave: (updatedVideo: VideoInfo) => void;
 }
 
 const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video, onSave }) => {
@@ -65,8 +65,8 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
         <div className="p-6 space-y-6">
           {/* Video Preview */}
           <div className="flex items-center space-x-4">
-            <img 
-              src={editedVideo.thumbnail_url} 
+            <img
+              src={editedVideo.thumbnail_url}
               alt={editedVideo.title}
               className="w-32 h-20 object-cover rounded-lg"
             />
@@ -112,7 +112,13 @@ const VideoEditModal: React.FC<VideoEditModalProps> = ({ isOpen, onClose, video,
             </label>
             <select
               value={editedVideo.status}
-              onChange={(e) => setEditedVideo({ ...editedVideo, status: e.target.value as any })}
+              onChange={(e) =>
+                setEditedVideo({
+                  ...editedVideo,
+                  status: e.target.value as 'pending' | 'approved' | 'rejected',
+                })
+              }
+
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="pending">Pending</option>

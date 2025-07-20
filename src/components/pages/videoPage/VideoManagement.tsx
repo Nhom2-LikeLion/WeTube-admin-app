@@ -10,8 +10,6 @@ import {
   Edit,
   Trash2,
   Filter,
-  Plus,
-  Upload,
   Tag,
   Clock,
   AlertTriangle
@@ -22,7 +20,7 @@ import { useGetVideosQuery, useUpdateVideoMutation, useDeleteVideoMutation } fro
 
 const VideoManagement: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  const { data: videos = [], isLoading, error } = useGetVideosQuery();
+  const { data: videos = [] } = useGetVideosQuery();
 
   const [selectedVideo, setSelectedVideo] = useState<VideoInfo | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);

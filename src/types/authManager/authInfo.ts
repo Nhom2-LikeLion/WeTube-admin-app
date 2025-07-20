@@ -18,6 +18,16 @@ export interface AuthInfoState {
   error: string;
 }
 
+export interface AuthMessageError {
+  email: string;
+  password: string;
+}
+
+export interface AuthRegex {
+  email: RegExp;
+  password: RegExp;
+}
+
 // Action: Start fetching auth info
 interface GetAuthInfoRequestAction {
   type: typeof GET_AUTH_INFO_REQUEST;

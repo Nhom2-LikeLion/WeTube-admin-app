@@ -7,7 +7,7 @@ interface Props {
 
 const ManagerInfoPage: React.FC<Props> = ({ managerId }) => {
   const { data: managerData, isLoading: isManagerLoading, error: managerError } = useGetManagerInfoQuery(managerId);
-  const { data: managers = [], isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
+  const { isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
 
   if (isManagerLoading || isManagersLoading) return <p>Đang tải thông tin...</p>;
   if (managerError || managersError) return <p>Có lỗi xảy ra!</p>;
