@@ -7,5 +7,5 @@ export interface RHFRegisterFormValues {
   confirmPassword: string;
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
-  status: 'Pending';
+  status: 'Pending'| 'Approved' | 'Rejected' | 'Banned';
 }

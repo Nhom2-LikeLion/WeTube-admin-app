@@ -36,7 +36,7 @@ export const ManagerList: React.FC<{
                 <div className="flex flex-col w-full">
                   <div className="flex justify-between">
                     <p className="font-semibold text-gray-800">{manager.name}</p>
-                    {/* <span
+                    <span
                       className={`text-sm font-medium ${
                         manager.status === "Approved"
                           ? "text-green-600"
@@ -48,7 +48,7 @@ export const ManagerList: React.FC<{
                       }`}
                     >
                       {manager.status}
-                    </span> */}
+                    </span>
                   </div>
                   <p className="text-xs text-gray-600">{manager.email}</p>
                 </div>

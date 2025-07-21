@@ -1,6 +1,6 @@
 import React from 'react';
 import ConfirmationModal from './ConfirmationModalProps';
-import { X, Eye, Calendar, User, Tag, Clock, ThumbsUp, MessageCircle, Share2, Flag } from 'lucide-react';
+import { X, Calendar, User, Tag, Clock, Flag } from 'lucide-react';
 import type { VideoInfo } from '../../../types/managerVideoTypes/videoInfo';
 
 interface VideoDetailModalProps {

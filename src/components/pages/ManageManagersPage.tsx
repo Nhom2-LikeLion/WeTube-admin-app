@@ -6,6 +6,7 @@ import {
   useGetManagersQuery,
   useUpdateManagerInfoMutation,
   useRejectManagerMutation,
+  useGetManagerInfoQuery,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";
 import ManagerInfoPage from "../features/manager/ManagerInfo";
@@ -42,21 +43,10 @@ export const ManageManagersPage: React.FC = () => {
   const [formState, setFormState] = useState<{
     showAddForm: boolean;
     showUpdateForm: boolean;
-    newManager: RHFRegisterFormValues;
     managerInfo: RHFRegisterFormValues;
   }>({
     showAddForm: false,
     showUpdateForm: false,
-    newManager: {
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      gender: "male",
-      dateOfBirth: "",
-      status: "Pending",
-    },
     managerInfo: {
       name: "",
       email: "",
@@ -79,9 +69,25 @@ export const ManageManagersPage: React.FC = () => {
   const [updateManagerInfo, { isLoading: isUpdating }] = useUpdateManagerInfoMutation();
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [banTargetId, setBanTargetId] = useState<string | null>(null);
+  const { data: managerInfo, isLoading: isManagerLoading } = useGetManagerInfoQuery(selectedManagerId!, { skip: !selectedManagerId });
 
-
-  const selectedManager = managers.find((manager) => manager.id === selectedManagerId);
+  useEffect(() => {
+  if (managerInfo) {
+    setFormState((prev) => ({
+      ...prev,
+      managerInfo: {
+        name: managerInfo.name,
+        email: managerInfo.email,
+        phone: managerInfo.phone,
+        password: "",
+        confirmPassword: "",
+        gender: managerInfo.gender,
+        dateOfBirth: managerInfo.dateOfBirth,
+        status: managerInfo.status,
+      },
+    }));
+  }
+}, [managerInfo]);
 
 
 
@@ -109,25 +115,12 @@ export const ManageManagersPage: React.FC = () => {
   );
 
 const handleEditManager = useCallback((id: string) => {
-      const manager = managers.find((m) => m.id === id);
-  if (!manager) return;
-
-        setFormState((prev) => ({
-          ...prev,
-          showUpdateForm: true,
-          managerInfo: {
-            name: manager.name,
-            email: manager.email,
-      phone: manager.phone,
-            password: "",
-            confirmPassword: "",
-            gender: manager.gender,
-      dateOfBirth: manager.dateOfBirth,
-      status: prev.managerInfo.status,
-          },
-        }));
   setSelectedManagerId(id);
-}, [managers]);
+  setFormState((prev) => ({
+    ...prev,
+    showUpdateForm: true,
+  }));
+}, []);
 
   const confirmBanManager = useCallback( async () => {
     if (!banTargetId) return;
@@ -212,30 +205,44 @@ const handleEditManager = useCallback((id: string) => {
                 onBanned ={handleBanManager}
               />
             </div>
-          <Modal 
-            isOpen = {!!selectedManagerId}
-            onClose={() => setSelectedManagerId(null)}
-          >
-            <ManagerInfoPage managerId={selectedManagerId}/>
-          </Modal>
 
-          <Modal
-            isOpen={formState.showAddForm}
-            onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}
-          > <AddManagerForm onSubmit ={ handleAddManager}/>
-          </Modal>
+            <Modal
+              isOpen={formState.showAddForm}
+              onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}
+            > 
+              <AddManagerForm onSubmit={handleAddManager} />
+            </Modal>
 
-          <Modal
+            <Modal
+              isOpen={!!selectedManagerId}
+              onClose={() => setSelectedManagerId(null)}
+            >
+              {selectedManagerId && (
+                <ManagerInfoPage managerId={selectedManagerId} />
+              )}
+            </Modal>
+
+           <Modal
             isOpen={formState.showUpdateForm}
             onClose={() => setFormState((prev) => ({ ...prev, showUpdateForm: false }))}
-          >
+            >
             <UpdateManagerForm
-              defaultValues={formState.managerInfo}
+              defaultValues={{
+                name: managerInfo?.name || "",
+                email: managerInfo?.email || "",
+                phone: managerInfo?.phone || "",
+                password: "",
+                confirmPassword: "",
+                gender: managerInfo?.gender || "male",
+                dateOfBirth: managerInfo?.dateOfBirth || "",
+                status: managerInfo?.status || "Pending",
+              }}
               onSubmit={handleUpdateManagerInfo}
               isLoading={isUpdating}
             />
-          </Modal>
-          <Modal
+
+            </Modal>
+            <Modal
               isOpen={!!banTargetId}
               onClose={() => setBanTargetId(null)}
             >
@@ -259,7 +266,7 @@ const handleEditManager = useCallback((id: string) => {
               </div>
             </Modal>
 
-          <Modal
+            <Modal
                 isOpen={!!deleteTargetId}
                 onClose={() => setDeleteTargetId(null)}
               >
@@ -282,8 +289,6 @@ const handleEditManager = useCallback((id: string) => {
                   </div>
                 </div>
             </Modal>
-
-
         </div>
       )}
     </div>
