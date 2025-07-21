@@ -1,5 +1,5 @@
 
-export interface FormData {
+export interface RHFRegisterFormValues {
   name: string;
   email: string;
   phone: string;
@@ -7,8 +7,5 @@ export interface FormData {
   confirmPassword: string;
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
-  status: 'Pending' | 'Approved' | 'Rejected' | 'Banned';
-  dailyReports?: number;      
-  processedReports?: number;  
-  unprocessedReports?: number;
+  status: 'Pending';
 }
