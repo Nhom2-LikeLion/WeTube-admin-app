@@ -13,7 +13,7 @@ const rows = [
 
 const currencyFormat = (value: number) => `$${value.toLocaleString()}`;
 
-const ProductPerformance = () => {
+const VideosPerformance = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
@@ -59,10 +59,7 @@ const ProductPerformance = () => {
         </thead>
         <tbody>
           {paginatedRows.map((row) => (
-            <tr
-              key={row.id}
-              className="hover:bg-gray-50"
-            >
+            <tr key={row.id} className="hover:bg-gray-50">
               <td className="border px-3 py-2">{row.video}</td>
               <td className="border px-3 py-2">{row.name}</td>
               <td className="border px-3 py-2">
@@ -122,4 +119,4 @@ const ProductPerformance = () => {
   );
 };
 
-export default ProductPerformance;
+export default VideosPerformance;
