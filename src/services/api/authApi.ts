@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { AuthInfo } from "../../types/userManager/authInfo";
+import type { AuthInfo } from "../../types/authManager/authInfo";
 
 /**
  * RTK Query API slice for authentication-related requests

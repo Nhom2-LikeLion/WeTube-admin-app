@@ -13,6 +13,7 @@ import RequireRole from './components/pages/authPage/RequireRole';
 function App() {
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -20,6 +21,11 @@ function App() {
       setIsAuthenticated(true);
     }
   }, []);
+
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   if (!isAuthenticated && location.pathname !== "/login") {
     return <Navigate to="/login" replace />;
@@ -33,36 +39,47 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       {isAuthenticated && (
         <>
-          <div className="fixed top-0 left-0 w-64 h-screen bg-gray-900 z-50">
-            <Sidebar />
-          </div>
-          <div className="fixed top-0 left-64 right-0 bg-white z-40">
-            <TopNav />
+          {/* Sidebar */}
+          <Sidebar 
+            isOpen={sidebarOpen} 
+            onClose={() => setSidebarOpen(false)} 
+          />
+          
+          {/* Top Navigation */}
+          <div className="fixed top-0 left-0 lg:left-64 right-0 bg-white z-30">
+            <TopNav onMenuClick={() => setSidebarOpen(true)} />
           </div>
         </>
       )}
 
-      <div className={isAuthenticated ? "ml-64 pt-16 min-h-screen" : ""}>
-        <Routes>
-          <Route path="/login" element={<LoginPage onLogin={() => setIsAuthenticated(true)} />} />
-          <Route path="/" element={
-            <RequireRole allowRoles={["admin"]}>
-              <DashboardPage />
-            </RequireRole>
-            } 
-            />
-          <Route path="/manage-videos" element={<VideoManagement />} />
-          <Route path="/manage-channels" element={<ManageChannelPage />} />
-          <Route
-            path="/manage-managers"
-            element={
+      {/* Main content */}
+      <div className={`${
+        isAuthenticated 
+          ? "pt-16 lg:ml-64 min-h-screen" 
+          : ""
+      }`}>
+        <div className="p-4 lg:p-6">
+          <Routes>
+            <Route path="/login" element={<LoginPage onLogin={() => setIsAuthenticated(true)} />} />
+            <Route path="/" element={
               <RequireRole allowRoles={["admin"]}>
-                <ManageManagersPage />
+                <DashboardPage />
               </RequireRole>
-            }
-          />
-          <Route path="/view-stats" element={<ViewStatsPage />} />
-        </Routes>
+              } 
+              />
+            <Route path="/manage-videos" element={<VideoManagement />} />
+            <Route path="/manage-channels" element={<ManageChannelPage />} />
+            <Route
+              path="/manage-managers"
+              element={
+                <RequireRole allowRoles={["admin"]}>
+                  <ManageManagersPage />
+                </RequireRole>
+              }
+            />
+            <Route path="/view-stats" element={<ViewStatsPage />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );
