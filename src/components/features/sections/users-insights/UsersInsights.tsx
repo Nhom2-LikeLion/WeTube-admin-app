@@ -1,36 +1,36 @@
 // components/sections/dashboard/visitor-insights/VisitorInsights.tsx
-import { useRef, useState } from "react";
-import type EChartsReactCore from "echarts-for-react/lib/core";
+// import { useRef, useState } from "react";
+// import type EChartsReactCore from "echarts-for-react/lib/core";
 
-import { userInsightsData } from "../../../../data/visitor-insights-data";
-import LegendToggleButton from "../../../common/LegendToggleButton";
+// import { userInsightsData } from "../../../../data/visitor-insights-data";
+// import LegendToggleButton from "../../../common/LegendToggleButton";
 import UserInsightsChart from "./UsersInsightsChart";
 
-const TIME_RANGES = ["day", "month", "year"] as const;
+// const TIME_RANGES = ["day", "month", "year"] as const;
 
 const UserInsights = () => {
-  const chartRef = useRef<EChartsReactCore | null>(null);
+  // const chartRef = useRef<EChartsReactCore | null>(null);
 
-  /* trạng thái hiển thị series */
-  const [legend, setLegend] = useState({
-    "normal users": false,
-    "pro users": false,
-  });
+  // /* trạng thái hiển thị series */
+  // const [legend, setLegend] = useState({
+  //   "normal users": false,
+  //   "pro users": false,
+  // });
 
-  /* range (D / M / Y) */
-  const [timeRange, setTimeRange] =
-    useState<(typeof TIME_RANGES)[number]>("month");
+  // /* range (D / M / Y) */
+  // const [timeRange, setTimeRange] =
+  //   useState<(typeof TIME_RANGES)[number]>("month");
 
-  /* bật / tắt series */
-  const handleLegendToggle = (name: keyof typeof legend) => {
-    setLegend((prev) => ({ ...prev, [name]: !prev[name] }));
+  // /* bật / tắt series */
+  // const handleLegendToggle = (name: keyof typeof legend) => {
+  //   setLegend((prev) => ({ ...prev, [name]: !prev[name] }));
 
-    /* bật tắt trực tiếp trên ECharts */
-    if (chartRef.current) {
-      const instance = chartRef.current.getEchartsInstance();
-      instance.dispatchAction({ type: "legendToggleSelect", name });
-    }
-  };
+  //   /* bật tắt trực tiếp trên ECharts */
+  //   if (chartRef.current) {
+  //     const instance = chartRef.current.getEchartsInstance();
+  //     instance.dispatchAction({ type: "legendToggleSelect", name });
+  //   }
+  // };
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -39,7 +39,7 @@ const UserInsights = () => {
         <h4 className="text-2xl font-semibold text-primary-700">Users</h4>
 
         {/* Toggle range buttons */}
-        <div className="inline-flex gap-1">
+        {/* <div className="inline-flex gap-1">
           {TIME_RANGES.map((range) => {
             const active = timeRange === range;
             return (
@@ -58,19 +58,19 @@ const UserInsights = () => {
               </button>
             );
           })}
-        </div>
+        </div> */}
       </div>
 
       {/* Chart */}
       <UserInsightsChart
-        chartRef={chartRef}
-        data={userInsightsData}
-        timeRange={timeRange}
-        style={{ height: 176 }}
+        // chartRef={chartRef}
+        // data={userInsightsData}
+        // timeRange={timeRange}
+        // style={{ height: 176 }}
       />
 
       {/* Legend */}
-      <div
+      {/* <div
         className="
           mt-4
           flex flex-col sm:flex-row
@@ -94,7 +94,7 @@ const UserInsights = () => {
           legend={legend}
           onToggle={handleLegendToggle}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

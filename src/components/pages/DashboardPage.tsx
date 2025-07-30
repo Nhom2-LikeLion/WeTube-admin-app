@@ -2,7 +2,7 @@ import ProductPerformance from "../features/sections/channels-performance/Produc
 import Sales from "../features/sections/today-views/Sales";
 import TopProducts from "../features/sections/top-channels/TopProducts";
 import TotalRevenueChart from "../features/sections/total-revenue/TotalRevenueChart";
-import { UsersInsightsChart } from "../features/sections/users-insights/UsersInsightsChart";
+import UsersInsightsChart from "../features/sections/users-insights/UsersInsightsChart";
 import SalesMapping from "../features/sections/users-mapping/SalesMapping";
 
 const Dashboard = () => {

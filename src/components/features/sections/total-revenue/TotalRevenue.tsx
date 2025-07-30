@@ -1,20 +1,20 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import TotalRevenueChart from './TotalRevenueChart';
-import { generateRevenueData } from '../../../../data/generateRevenueData';
+// import { generateRevenueData } from '../../../../data/generateRevenueData';
 
 /* các giá trị cố định của time-range  */
-const TIME_RANGES = ['day', 'month', 'year'] as const;
+// const TIME_RANGES = ['day', 'month', 'year'] as const;
 
 const TotalRevenue = () => {
-  const [timeRange, setTimeRange] =
-    useState<(typeof TIME_RANGES)[number]>('month');
+  // const [timeRange, setTimeRange] =
+  //   useState<(typeof TIME_RANGES)[number]>('month');
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex items-center justify-between mb-6">
         <h4 className="text-2xl font-semibold">Total Revenue</h4>
 
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           {TIME_RANGES.map((range) => {
             const active = timeRange === range;
 
@@ -34,14 +34,14 @@ const TotalRevenue = () => {
               </button>
             );
           })}
-        </div>
+        </div> */}
       </div>
 
       <div className="h-[247px]">
         <TotalRevenueChart
-          data={generateRevenueData[timeRange]}
-          timeRange={timeRange}
-          style={{ height: 247, width: "100%" as unknown as number }}
+          // data={generateRevenueData[timeRange]}
+          // timeRange={timeRange}
+          // style={{ height: 247, width: "100%" as unknown as number }}
         />
       </div>
     </div>

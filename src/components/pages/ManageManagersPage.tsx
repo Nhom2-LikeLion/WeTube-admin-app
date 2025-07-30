@@ -5,7 +5,6 @@ import {
   useDeleteManagerMutation,
   useGetManagersQuery,
   useUpdateManagerInfoMutation,
-  useRejectManagerMutation,
   useGetManagerInfoQuery,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";

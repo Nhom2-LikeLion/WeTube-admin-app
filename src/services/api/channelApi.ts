@@ -18,7 +18,7 @@ export const channelApi = createApi({
         url: "channel",
         params: params ?? undefined,
       }),
-      transformResponse: (response: IChannel[], meta, arg) => {
+      transformResponse: (response: IChannel[], _meta, arg) => {
         if (!arg) return response;
         const key = Object.keys(arg)[0] as keyof IChannel;
         const value = arg[key];
@@ -39,7 +39,7 @@ export const channelApi = createApi({
 
     getChannelInfo: builder.query<IChannel, string>({
       query: (id) => `channel/${id}`,
-      providesTags: (result, error, id) => [{ type: "Channels", id }],
+      providesTags: (_result, _error, id) => [{ type: "Channels", id }],
     }),
 
     deleteChannel: builder.mutation<{ success: boolean }, string>({
