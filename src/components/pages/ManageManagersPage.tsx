@@ -15,6 +15,12 @@ import { UpdateManagerForm } from "../features/manager/UpdateManagerForm";
 import { ManagerList } from "../features/manager/ManagerList";
 import ReportCharts from "../features/manager/ReportCharts";
 
+interface ReportChartsProps {
+  dailyReports: number;
+  processedReports: number;
+  unprocessedReports: number;
+}
+
 const Modal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -79,6 +85,8 @@ export const ManageManagersPage: React.FC = () => {
   const [deleteManager] = useDeleteManagerMutation();
   const [updateManagerInfo, { isLoading: isUpdating }] = useUpdateManagerInfoMutation();
   const [rejectManager, { isLoading: isRejecting }] = useRejectManagerMutation();
+
+    const TypedReportCharts = ReportCharts as React.FC<ReportChartsProps>;
 
 
   useEffect(() => {
@@ -226,7 +234,12 @@ export const ManageManagersPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Manage Managers</h1>
         <button
-          onClick={() => setFormState((prev) => ({ ...prev, showAddForm: !prev.showAddForm }))}
+          onClick={() =>
+            setFormState((prev) => ({
+              ...prev,
+              showAddForm: !prev.showAddForm,
+            }))
+          }
           className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
         >
           {formState.showAddForm ? "Close" : "Create New"}
@@ -235,10 +248,16 @@ export const ManageManagersPage: React.FC = () => {
 
       {renderLoadingOrError() || (
         <div className="space-y-6">
-          <ReportCharts
+          {/* <ReportCharts
+            // dailyReports={selectedManager?.dailyReports || 0}
+            // weeklyReports={selectedManager?.weeklyReports || 0}
+            // monthlyReports={selectedManager?.monthlyReports || 0}
+            // processedReports={selectedManager?.processedReports || 0}
+            // unprocessedReports={selectedManager?.unprocessedReports || 0}
+            // manager={selectedManager}
+          /> */}
+          <TypedReportCharts
             dailyReports={selectedManager?.dailyReports || 0}
-            weeklyReports={selectedManager?.weeklyReports || 0}
-            monthlyReports={selectedManager?.monthlyReports || 0}
             processedReports={selectedManager?.processedReports || 0}
             unprocessedReports={selectedManager?.unprocessedReports || 0}
           />
@@ -262,7 +281,9 @@ export const ManageManagersPage: React.FC = () => {
 
           <Modal
             isOpen={formState.showAddForm}
-            onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}
+            onClose={() =>
+              setFormState((prev) => ({ ...prev, showAddForm: false }))
+            }
           >
             <AddManagerForm
               newManager={formState.newManager}
@@ -275,7 +296,9 @@ export const ManageManagersPage: React.FC = () => {
           </Modal>
           <Modal
             isOpen={formState.showUpdateForm}
-            onClose={() => setFormState((prev) => ({ ...prev, showUpdateForm: false }))}
+            onClose={() =>
+              setFormState((prev) => ({ ...prev, showUpdateForm: false }))
+            }
           >
             <UpdateManagerForm
               managerInfo={formState.managerInfo}

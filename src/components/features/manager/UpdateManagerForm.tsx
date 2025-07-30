@@ -34,13 +34,13 @@ export const UpdateManagerForm: React.FC<{
           onChange={(e) => setManagerInfo({ ...managerInfo, phone: e.target.value })}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
+        {/* <input
           type="text"
           placeholder="Địa chỉ"
           value={managerInfo.address}
           onChange={(e) => setManagerInfo({ ...managerInfo, address: e.target.value })}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        /> */}
         <input
           type="date"
           placeholder="Ngày sinh"
@@ -82,7 +82,7 @@ export const UpdateManagerForm: React.FC<{
           }
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
+        {/* <input
           type="number"
           placeholder="Báo cáo tuần"
           value={managerInfo.weeklyReports || ""}
@@ -99,7 +99,7 @@ export const UpdateManagerForm: React.FC<{
             setManagerInfo({ ...managerInfo, monthlyReports: Number(e.target.value) || 0 })
           }
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        /> */}
         <input
           type="number"
           placeholder="Báo cáo đã xử lý"
