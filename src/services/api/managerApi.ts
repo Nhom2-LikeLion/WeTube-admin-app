@@ -8,29 +8,38 @@ export const managerApi = createApi({
   }),
   tagTypes: ["ManagerInfo", "ManagerVideos", "Managers"],
   endpoints: (builder) => ({
-    // Lấy danh sách Managers
+    // Get list of managers
     getManagers: builder.query<managerData[], void>({
       query: () => "Manager",
-      providesTags: ["Managers"],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "ManagerInfo" as const, id })),
+              { type: "Managers" },
+            ]
+          : [{ type: "Managers" }],
     }),
 
-    // Lấy thông tin một Manager
+    // Get single manager info
     getManagerInfo: builder.query<managerData, string>({
       query: (id) => `Manager/${id}`,
-      providesTags: ["ManagerInfo"],
+      providesTags: (result, error, id) => [
+        { type: "ManagerInfo", id },
+        { type: "Managers" },
+      ],
     }),
 
-    // Thêm Manager
+    // Add manager
     addManager: builder.mutation<managerData, Partial<managerData>>({
       query: (data) => ({
         url: "Manager",
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Managers"],
+      invalidatesTags: [{ type: "Managers" }],
     }),
 
-    // Cập nhật thông tin Manager
+    // Update manager info
     updateManagerInfo: builder.mutation<
       managerData,
       { id: string; data: Partial<managerData> }
@@ -40,28 +49,48 @@ export const managerApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["ManagerInfo", "Managers"],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "ManagerInfo", id },
+        { type: "Managers" },
+      ],
     }),
 
-    // Xóa Manager
+    // Delete manager
     deleteManager: builder.mutation<{ success: boolean }, string>({
       query: (id) => ({
         url: `Manager/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Managers"],
+      invalidatesTags: (result, error, id) => [
+        { type: "ManagerInfo", id },
+        { type: "Managers" },
+      ],
     }),
+
+    // Approve manager
     approveManager: builder.mutation<void, string>({
       query: (id) => ({
         url: `/Manager/${id}`,
         method: "PATCH",
+        body: { status: "Approved" },
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "ManagerInfo", id },
+        { type: "Managers" },
+      ],
     }),
+
+    // Reject manager
     rejectManager: builder.mutation<void, string>({
       query: (id) => ({
         url: `/Manager/${id}`,
         method: "PATCH",
+        body: { status: "Rejected" },
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "ManagerInfo", id },
+        { type: "Managers" },
+      ],
     }),
   }),
 });

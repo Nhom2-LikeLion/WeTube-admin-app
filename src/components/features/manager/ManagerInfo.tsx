@@ -2,12 +2,13 @@ import React from "react";
 import { useGetManagerInfoQuery, useGetManagersQuery } from "../../../services/api/managerApi";
 
 interface Props {
-  managerId: string;
+  managerId: string| null ;
 }
 
 const ManagerInfoPage: React.FC<Props> = ({ managerId }) => {
-  const { data: managerData, isLoading: isManagerLoading, error: managerError } = useGetManagerInfoQuery(managerId);
+  const { data: managerData, isLoading: isManagerLoading, error: managerError } = useGetManagerInfoQuery(managerId! , {skip: !managerId} );
   const { isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
+
 
   if (isManagerLoading || isManagersLoading) return <p className="text-center text-gray-700">Đang tải thông tin...</p>;
   if (managerError || managersError) return <p className="text-center text-red-600">Có lỗi xảy ra khi tải dữ liệu!</p>;
