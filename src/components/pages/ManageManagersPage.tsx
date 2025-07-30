@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, type FormEvent } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   useAddManagerMutation,
@@ -184,8 +184,14 @@ const handleEditManager = useCallback((id: string) => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Manage Managers</h1>
         <button
-          onClick={() => setFormState((prev) => ({ ...prev, showAddForm: !prev.showAddForm }))}
+          onClick={() =>
+            setFormState((prev) => ({
+              ...prev,
+              showAddForm: !prev.showAddForm,
+            }))
+          }
           className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
+          disabled={isAdding}
         >
           {formState.showAddForm ? "Close" : "Create New"}
         </button>
@@ -193,38 +199,51 @@ const handleEditManager = useCallback((id: string) => {
 
       {renderLoadingOrError() || (
         <div className="space-y-6">
-            <div className="w-full ">
-              <ManagerList
-                managers={managers}
-                selectedManagerId={selectedManagerId}
-                onSelect={setSelectedManagerId}
-                onView ={setSelectedManagerId}
-                onEdit={handleEditManager}
-                onDelete ={handleDeleteClick}
-                onBanned ={handleBanManager}
-              />
-            </div>
+          <div className="w-full ">
+            <ManagerList
+              managers={managers}
+              selectedManagerId={selectedManagerId}
+              onSelect={setSelectedManagerId}
+              onView={setSelectedManagerId}
+              onEdit={handleEditManager}
+              onDelete={handleDeleteClick}
+              onBanned={handleBanManager}
+            />
+          </div>
 
-            <Modal
-              isOpen={formState.showAddForm}
-              onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}
-            > 
-              <AddManagerForm onSubmit={handleAddManager} />
-            </Modal>
+          <Modal
+            isOpen={formState.showAddForm}
+            onClose={() =>
+              setFormState((prev) => ({ ...prev, showAddForm: false }))
+            }
+          >
+            <AddManagerForm onSubmit={handleAddManager} />
+          </Modal>
 
-            <Modal
-              isOpen={!!selectedManagerId}
-              onClose={() => setSelectedManagerId(null)}
-            >
-              {selectedManagerId && (
+          <Modal
+            isOpen={!!selectedManagerId}
+            onClose={() => setSelectedManagerId(null)}
+          >
+            {/* {selectedManagerId && (
+              <ManagerInfoPage managerId={selectedManagerId} />
+            )} */}
+            {isManagerLoading ? (
+              <p className="text-center text-gray-600">
+                Loading manager info...
+              </p>
+            ) : (
+              selectedManagerId && (
                 <ManagerInfoPage managerId={selectedManagerId} />
-              )}
-            </Modal>
+              )
+            )}
+          </Modal>
 
-           <Modal
+          <Modal
             isOpen={formState.showUpdateForm}
-            onClose={() => setFormState((prev) => ({ ...prev, showUpdateForm: false }))}
-            >
+            onClose={() =>
+              setFormState((prev) => ({ ...prev, showUpdateForm: false }))
+            }
+          >
             <UpdateManagerForm
               defaultValues={{
                 name: managerInfo?.name || "",
@@ -239,55 +258,58 @@ const handleEditManager = useCallback((id: string) => {
               onSubmit={handleUpdateManagerInfo}
               isLoading={isUpdating}
             />
-
-            </Modal>
-            <Modal
-              isOpen={!!banTargetId}
-              onClose={() => setBanTargetId(null)}
-            >
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold text-gray-800">Ban Confirmation</h2>
-                <p>Are you sure you want to deactivate this manager?</p>
-                <div className="flex justify-end gap-4">
-                  <button
-                    onClick={() => setBanTargetId(null)}
-                    className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={confirmBanManager}
-                    className="px-4 py-2 rounded-md bg-yellow-600 text-white hover:bg-yellow-700"
-                  >
-                    Deactivate
-                  </button>
-                </div>
+          </Modal>
+          <Modal
+            isOpen={!!banTargetId}
+            onClose={() => setBanTargetId(null)}
+          >
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-gray-800">
+                Ban Confirmation
+              </h2>
+              <p>Are you sure you want to deactivate this manager?</p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setBanTargetId(null)}
+                  className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmBanManager}
+                  className="px-4 py-2 rounded-md bg-yellow-600 text-white hover:bg-yellow-700"
+                >
+                  Deactivate
+                </button>
               </div>
-            </Modal>
+            </div>
+          </Modal>
 
-            <Modal
-                isOpen={!!deleteTargetId}
-                onClose={() => setDeleteTargetId(null)}
-              >
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold text-gray-800">Delete Confirmation</h2>
-                  <p>Are you sure you want to delete this manager?</p>
-                  <div className="flex justify-end gap-4">
-                    <button
-                      onClick={() => setDeleteTargetId(null)}
-                      className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleDeleteManager}
-                      className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-            </Modal>
+          <Modal
+            isOpen={!!deleteTargetId}
+            onClose={() => setDeleteTargetId(null)}
+          >
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-gray-800">
+                Delete Confirmation
+              </h2>
+              <p>Are you sure you want to delete this manager?</p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setDeleteTargetId(null)}
+                  className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteManager}
+                  className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </Modal>
         </div>
       )}
     </div>

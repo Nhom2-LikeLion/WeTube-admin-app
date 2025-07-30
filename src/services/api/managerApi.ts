@@ -23,7 +23,7 @@ export const managerApi = createApi({
     // Get single manager info
     getManagerInfo: builder.query<managerData, string>({
       query: (id) => `Manager/${id}`,
-      providesTags: (result, error, id) => [
+      providesTags: (_result, _error, id) => [
         { type: "ManagerInfo", id },
         { type: "Managers" },
       ],
@@ -49,7 +49,7 @@ export const managerApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: "ManagerInfo", id },
         { type: "Managers" },
       ],
@@ -61,7 +61,7 @@ export const managerApi = createApi({
         url: `Manager/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "ManagerInfo", id },
         { type: "Managers" },
       ],
@@ -74,7 +74,7 @@ export const managerApi = createApi({
         method: "PATCH",
         body: { status: "Approved" },
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "ManagerInfo", id },
         { type: "Managers" },
       ],
@@ -87,7 +87,7 @@ export const managerApi = createApi({
         method: "PATCH",
         body: { status: "Rejected" },
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "ManagerInfo", id },
         { type: "Managers" },
       ],

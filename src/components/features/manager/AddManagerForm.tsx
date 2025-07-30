@@ -16,100 +16,119 @@ const AddManagerForm: React.FC<AddManagerFormProps> = ({onSubmit}) => {
 } = useForm<RHFRegisterFormValues>({
   resolver: yupResolver(RHFRegisterFormSchema),
 });
-   const submit: SubmitHandler<RHFRegisterFormValues> = (data) => {
-    onSubmit(data);
-    reset();
-  };
+  //  const submit: SubmitHandler<RHFRegisterFormValues> = (data) => {
+  //   onSubmit(data);
+  //   reset();
+  // };
+
+    const handleFormSubmit: SubmitHandler<RHFRegisterFormValues> = (data) => {
+      onSubmit(data);
+      reset(); 
+    };
 
 return (
-  
   <form
-  onSubmit={handleSubmit(onSubmit)}
-  className="space-y-4 p-6 bg-white rounded-xl shadow-md mt-4 transition-all duration-200 w-full"
+    onSubmit={handleSubmit(handleFormSubmit)}
+    className="space-y-4 p-6 bg-white rounded-xl shadow-md mt-4 transition-all duration-200 w-full"
   >
-    <h2 className="text-xl font-semibold text-gray-800">Create Manager Account</h2>
+    <h2 className="text-xl font-semibold text-gray-800">
+      Create Manager Account
+    </h2>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="flex flex-col">
-      <input
-      {...register("name")}
-        type="text"
-        placeholder="Full Name"
-      className="p-2 w-full border rounded-md"
-      />
-    {errors.name && (
-      <p className="text-red-500 text-sm mt-1"> {errors.name.message}</p>)}
+      <div className="flex flex-col">
+        <input
+          {...register("name")}
+          type="text"
+          placeholder="Full Name"
+          className="p-2 w-full border rounded-md"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1"> {errors.name.message}</p>
+        )}
       </div>
       <div className="flex flex-col">
-      <input
+        <input
           {...register("email")}
-        type="email"
-        placeholder="Email"
-        className="p-2 border rounded-md"
-      />
+          type="email"
+          placeholder="Email"
+          className="p-2 border rounded-md"
+        />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
       </div>
 
       <div className="flex flex-col">
-      <input
+        <input
           {...register("phone")}
-        type="tel"
-        placeholder="Phone"
-        className="p-2 border rounded-md"
+          type="tel"
+          placeholder="Phone"
+          className="p-2 border rounded-md"
         />
         {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
-        </div>
-        <div className="flex flex-col">
-        <select {...register("gender")} className="p-2 border rounded-md">
+      </div>
+      <div className="flex flex-col">
+        <select
+          {...register("gender")}
+          className="p-2 border rounded-md"
+        >
           <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-        {errors.gender && <p className="text-red-500">{errors.gender.message}</p>}
-        </div>
-
-    <div className="flex flex-col">
-      <input
-        {...register("password")}
-        type="password"
-        placeholder="Password"
-        className="p-2 border rounded-md"
-      />
-      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        {errors.gender && (
+          <p className="text-red-500">{errors.gender.message}</p>
+        )}
       </div>
 
-  <div className="flex flex-col">
-      <input
-      {...register("confirmPassword")}
-        type="password"
-        placeholder="Confirm Password"
+      <div className="flex flex-col">
+        <input
+          {...register("password")}
+          type="password"
+          placeholder="Password"
+          className="p-2 border rounded-md"
+        />
+        {errors.password && (
+          <p className="text-red-500">{errors.password.message}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col">
+        <input
+          {...register("confirmPassword")}
+          type="password"
+          placeholder="Confirm Password"
+          className="p-2 border rounded-md"
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-500">{errors.confirmPassword.message}</p>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <input
+          {...register("dateOfBirth")}
+          type="date"
+          placeholder="Date of Birth"
+          className="p-2 border rounded-md"
+        />
+        {errors.dateOfBirth && (
+          <p className="text-red-500">{errors.dateOfBirth.message}</p>
+        )}
+      </div>
+      <select
+        {...register("status")}
         className="p-2 border rounded-md"
-      />
-    {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
-    </div>
-    <div className="flex flex-col">
-      <input
-        {...register("dateOfBirth")}
-        type="date"
-        placeholder="Date of Birth"
-        className="p-2 border rounded-md"
-      />
-      {errors.dateOfBirth && <p className="text-red-500">{errors.dateOfBirth.message}</p>}
-    </div>
-    <select {...register("status")} className="p-2 border rounded-md">
+      >
         <option value="Pending">Pending</option>
       </select>
-    {errors.status && <p className="text-red-500">{errors.status.message}</p>}
-      
+      {errors.status && <p className="text-red-500">{errors.status.message}</p>}
     </div>
-  
 
     <button
       type="submit"
-    className="w-full py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700"
+      className="w-full py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700"
     >
-    Create Manager
+      Create Manager
     </button>
   </form>
 );
