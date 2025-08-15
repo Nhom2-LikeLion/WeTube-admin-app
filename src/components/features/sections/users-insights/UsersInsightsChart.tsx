@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface apiChartItem {
+interface ApiChartItem {
   date: string;
   normal: number;
   pro: number;
@@ -35,7 +35,7 @@ function formatTimestampToDateString(timestamp: number | string) {
 }
 
 function useChartData() {
-  const [chartData, setChartData] = React.useState<apiChartItem[]>([]);
+  const [chartData, setChartData] = React.useState<ApiChartItem[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -48,7 +48,7 @@ function useChartData() {
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const result = await response.json();
-        const mappedData: apiChartItem[] = result.map((item: apiChartItem) => ({
+        const mappedData: ApiChartItem[] = result.map((item: ApiChartItem) => ({
           date: formatTimestampToDateString(item.date),
           normal: Number(item.normal),
           pro: Number(item.pro),
