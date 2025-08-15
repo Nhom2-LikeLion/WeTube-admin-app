@@ -6,7 +6,6 @@ import UsersInsightsChart from "../features/sections/users-insights/UsersInsight
 import SalesMapping from "../features/sections/users-mapping/SalesMapping";
 import { useEffect, useState } from "react";
 import Loading from "../common/Loading";
-import LayoutAnimation from "../common/DarkLightMode";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -19,29 +18,28 @@ const Dashboard = () => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="grid grid-cols-10 gap-6 w-full">
-      <div className="col-span-full rounded-xl shadow">
+    <div className="grid grid-cols-10 gap-6 w-full rounded-xl bg-gradient-to-br from-green-300 via-blue-200 to-yellow-100 w-full dark:bg-[#034c5f]">
+      <div className="col-span-full rounded-xl ">
         <Summary />
-        <LayoutAnimation />
       </div>
 
-      <div className="col-span-6 rounded-xl shadow">
+      <div className="col-span-6 rounded-xl ">
         <UsersInsightsChart />
       </div>
 
-      <div className="col-span-4 rounded-xl shadow">
+      <div className="col-span-4 rounded-xl ">
         <TopChannels />
       </div>
 
-      <div className="col-span-full rounded-xl shadow">
+      <div className="col-span-full rounded-xl">
         <TotalRevenueChart />
       </div>
 
-      <div className="col-span-full rounded-xl shadow">
+      <div className="col-span-full rounded-xl">
         <SalesMapping />
       </div>
 
-      <div className="col-span-full rounded-xl shadow">
+      <div className="col-span-full rounded-xl">
         <VideosPerformance />
       </div>
     </div>

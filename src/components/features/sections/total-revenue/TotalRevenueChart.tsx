@@ -129,7 +129,7 @@ export default function TotalRevenue() {
   );
 
   return (
-    <Card>
+    <Card className="bg-[#D0D4B8] dark:bg-[#746c6b]">
       <CardHeader>
         <CardTitle>Total Revenue</CardTitle>
         <div className="flex gap-6 mt-2 text-sm text-muted-foreground">
@@ -159,8 +159,8 @@ export default function TotalRevenue() {
           >
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
+          <SelectContent className="rounded-xl bg-[#D0D4B8] hover:bg-[] dark:bg-[]">
+            <SelectItem value="90d" className="rounded-lg ">
               Last 3 months
             </SelectItem>
             <SelectItem value="30d" className="rounded-lg">

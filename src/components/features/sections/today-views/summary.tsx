@@ -4,8 +4,8 @@ import SummaryCard from "./summaryCard";
 
 const Summary = () => {
   return (
-    <div className="bg-white rounded-lg shadow-sm pt-6 pb-8 px-8">
-      <div className="flex items-center justify-between mb-10">
+    <div className="bg-[#D0D4B8] rounded-lg shadow-sm dark:bg-[#746c6b] pt-6 pb-8 px-8">
+      <div className="flex items-center justify-between mb-10 dark:text-white">
         <div>
           <h4 className="text-2xl font-semibold mb-1">Today's Summary</h4>
         </div>
@@ -20,7 +20,10 @@ const Summary = () => {
             transition-colors
           "
         >
-          <Icon icon="solar:upload-linear" className="w-5 h-5" />
+          <Icon
+            icon="solar:upload-linear"
+            className="w-5 h-5 dark:text-white"
+          />
           Export
         </button>
       </div>

@@ -38,7 +38,7 @@ export default function LayoutAnimation() {
       onClick={toggleTheme}
     >
       <motion.div
-        className="w-6 h-6 bg-purple-600 rounded-full"
+        className="w-6 h-6 bg-purple-900 rounded-full"
         style={handle}
         layout
         transition={{
@@ -58,7 +58,7 @@ export default function LayoutAnimation() {
 const container = {
   width: 50,
   height: 30,
-  backgroundColor: "grey",
+  backgroundColor: "#8F89B7",
   borderRadius: 100,
   cursor: "pointer",
   display: "flex",

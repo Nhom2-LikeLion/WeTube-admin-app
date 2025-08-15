@@ -40,11 +40,8 @@ function App() {
       {isAuthenticated && (
         <>
           {/* Sidebar */}
-          <Sidebar 
-            isOpen={sidebarOpen} 
-            onClose={() => setSidebarOpen(false)} 
-          />
-          
+          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
           {/* Top Navigation */}
           <div className="fixed top-0 left-0 lg:left-64 right-0 bg-white z-30">
             <TopNav onMenuClick={() => setSidebarOpen(true)} />
@@ -53,20 +50,23 @@ function App() {
       )}
 
       {/* Main content */}
-      <div className={`${
-        isAuthenticated 
-          ? "pt-16 lg:ml-64 min-h-screen" 
-          : ""
-      }`}>
-        <div className="p-4 lg:p-6">
+      <div
+        className={`${isAuthenticated ? "pt-16 lg:ml-64 min-h-screen" : ""}`}
+      >
+        <div className="p-4 lg:p-6 bg-gradient-to-br from-green-300 via-blue-200 to-yellow-100 w-full dark:bg-gradient-to-br from-blue-300 via-blue-200 to-yellow-100">
           <Routes>
-            <Route path="/login" element={<LoginPage onLogin={() => setIsAuthenticated(true)} />} />
-            <Route path="/" element={
-              <RequireRole allowRoles={["admin"]}>
-                <DashboardPage />
-              </RequireRole>
-              } 
-              />
+            <Route
+              path="/login"
+              element={<LoginPage onLogin={() => setIsAuthenticated(true)} />}
+            />
+            <Route
+              path="/"
+              element={
+                <RequireRole allowRoles={["admin"]}>
+                  <DashboardPage />
+                </RequireRole>
+              }
+            />
             <Route path="/manage-videos" element={<VideoManagement />} />
             <Route path="/manage-channels" element={<ManageChannelPage />} />
             <Route

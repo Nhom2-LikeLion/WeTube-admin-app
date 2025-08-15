@@ -127,9 +127,9 @@ export default function TotalRevenue() {
   );
 
   return (
-    <Card className="pt-0">
+    <Card className="pt-0 bg-[#D0D4B8] dark:bg-[#746c6b]">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-          <CardTitle className="grid flex-1 gap-1">Users</CardTitle>
+        <CardTitle className="grid flex-1 gap-1 text-xl">Users</CardTitle>
         <div className="flex gap-6 mt-2 text-sm text-muted-foreground">
           <div className="flex flex-col items-start">
             <span className="font-medium text-foreground">
@@ -143,7 +143,7 @@ export default function TotalRevenue() {
             </span>
             <span className="text-xs">Pro Users</span>
           </div>
-          </div>
+        </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"

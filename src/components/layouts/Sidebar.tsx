@@ -7,9 +7,12 @@ import {
   Play,
   LayoutDashboard,
   X,
+  Leaf,
+  Moon,
 } from "lucide-react";
 import type { INavItem } from "../../types/navItemTypes";
 import { NavLink } from "react-router-dom";
+import LayoutAnimation from "../common/DarkLightMode";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -47,6 +50,7 @@ const navItems: INavItem[] = [
     icon: BarChart3,
     to: "/view-stats",
   },
+  
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
@@ -64,8 +68,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           className={({ isActive }) =>
             `flex items-center px-3 py-2.5 rounded-lg transition-all duration-200 ${
               isActive
-                ? "bg-blue-600 text-white shadow-lg"
-                : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                ? "bg-[#A4C3A2] dark:bg-[#143a51] text-white shadow-xl"
+                : "text-gray-300 hover:bg-[#A4C3A2] dark:hover:bg-[#143a51] hover:text-white"
             }`
           }
         >
@@ -83,7 +87,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Mobile overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-opacity-50 z-40 lg:hidden"
@@ -91,13 +94,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         />
       )}
 
-      {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-64 bg-gray-900 h-screen flex flex-col z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 w-64 bg-[#5D7B6F] dark:bg-[#0b1f3a] h-screen flex flex-col z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
-        {/* Mobile close button */}
         <div className="lg:hidden absolute top-4 right-4">
           <button
             onClick={onClose}
@@ -122,6 +123,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-2">
             {navItems.map((item) => renderNavItem(item))}
+          </div>
+        </div>
+        <div className="flex items-center justify-center p-3 gap-4">
+          <div className="text-white">
+            <Leaf className="w-7 h-7" />
+          </div>
+
+          <LayoutAnimation />
+
+          <div className="text-white ">
+            <Moon className="w-7 h-7" />
           </div>
         </div>
 
