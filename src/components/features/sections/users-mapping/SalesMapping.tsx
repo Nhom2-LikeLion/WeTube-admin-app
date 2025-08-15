@@ -10,9 +10,9 @@ const SalesMapping = () => {
 
   return (
     /* Paper → div Tailwind */
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-[#D0D4B8] rounded-lg shadow-sm p-6 dark:bg-[#746c6b]">
       {/* Typography h4 */}
-      <h4 className="text-2xl font-semibold text-primary-700 mb-5">
+      <h4 className="text-2xl font-semibold text-primary-700 mb-5 dark:text-white">
         Users Mapping by Country
       </h4>
 

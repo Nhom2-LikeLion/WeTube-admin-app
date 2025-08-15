@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import type { SaleItem } from "../../../../data/sales";
 
-const SaleCard = ({ item }: { item: SaleItem }) => {
+const SummaryCard = ({ item }: { item: SaleItem }) => {
   const {
     value,
     label,
@@ -16,15 +16,12 @@ const SaleCard = ({ item }: { item: SaleItem }) => {
     <div className={`rounded-xl p-5 ${bgColorClass}`}>
       {/* Icon wrapper */}
       <div
-        className={`${iconBgColorClass} w-10 h-10 rounded-full flex items-center justify-center mb-4`}
+        className={`${iconBgColorClass} h-10 rounded-full flex items-center justify-center mb-4`}
       >
         {SvgIcon ? (
-          <SvgIcon className="w-6 h-6 text-white" />
+          <SvgIcon className="w-6 h-6 text-white block" />
         ) : icon ? (
-          <Icon
-            icon={icon}
-            className="w-5 h-5 text-white"
-          />
+          <Icon icon={icon} className="w-5 h-5 text-white block" />
         ) : null}
       </div>
 
@@ -36,4 +33,4 @@ const SaleCard = ({ item }: { item: SaleItem }) => {
   );
 };
 
-export default SaleCard;
+export default SummaryCard;
