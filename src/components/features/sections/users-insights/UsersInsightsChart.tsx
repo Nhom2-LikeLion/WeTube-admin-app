@@ -110,7 +110,7 @@ export default function TotalRevenue() {
         acc.pro += item.pro;
         return acc;
       },
-      { normal: 0, pro: 0}
+      { normal: 0, pro: 0 }
     );
   }, [filteredData]);
 
@@ -118,12 +118,10 @@ export default function TotalRevenue() {
   if (error) return <div>Error: {error}</div>;
 
   const maxValue = Math.max(
-    ...filteredData.flatMap(
-      (item: { normal: number; pro: number }) => [
-        item.normal,
-        item.pro,
-      ]
-    )
+    ...filteredData.flatMap((item: { normal: number; pro: number }) => [
+      item.normal,
+      item.pro,
+    ])
   );
 
   return (
@@ -144,7 +142,10 @@ export default function TotalRevenue() {
             <span className="text-xs">Pro Users</span>
           </div>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select
+          value={timeRange}
+          onValueChange={setTimeRange}
+        >
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
             aria-label="Select a value"
@@ -152,13 +153,22 @@ export default function TotalRevenue() {
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
+            <SelectItem
+              value="90d"
+              className="rounded-lg"
+            >
               Last 3 months
             </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
+            <SelectItem
+              value="30d"
+              className="rounded-lg"
+            >
               Last 30 days
             </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
+            <SelectItem
+              value="7d"
+              className="rounded-lg"
+            >
               Last 7 days
             </SelectItem>
           </SelectContent>
@@ -171,7 +181,13 @@ export default function TotalRevenue() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillNormal" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="fillNormal"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop
                   offset="5%"
                   stopColor="var(--color-normal)"
@@ -183,7 +199,13 @@ export default function TotalRevenue() {
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillPro" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="fillPro"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop
                   offset="5%"
                   stopColor="var(--color-pro)"
