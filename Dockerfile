@@ -14,7 +14,7 @@ WORKDIR /app
 
 RUN npm install -g serve
 
-COPY --from=builder /app/dist ./
+COPY --from=builder /Wetube-admin-app/dist ./
 
 EXPOSE 5173
 
