@@ -4,7 +4,6 @@ import {
   BarChart3,
   Users,
   Settings,
-  Play,
   LayoutDashboard,
   X,
   Leaf,
@@ -110,12 +109,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
         <div className="p-6 border-b border-gray-700">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3">
-              <Play className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-white text-lg font-bold">WeTube</h1>
-              <p className="text-gray-400 text-sm">Studio</p>
+            <div className="flex items-center p-4 gap-1">
+              <img
+                src="/image/Logo.png"
+                alt="Logo"
+                width={32}
+                height={32}
+              />
+              <p className="text-xl font-semibold tracking-tight text-white">WeTube</p>
             </div>
           </div>
         </div>

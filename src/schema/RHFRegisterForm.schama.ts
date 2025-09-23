@@ -16,6 +16,8 @@ export const RHFRegisterFormSchema = Yup.object({
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm Password is required"),
   dateOfBirth: Yup.string().required("Date of birth is required"),
+  address: Yup.string().required("Address is required"),
+  role: Yup.string().oneOf(["Manager", "Admin"]).required("Role is required"),
   status: Yup.mixed<'Pending' | 'Approved' | 'Rejected' | 'Banned'>()
     .oneOf(['Pending', 'Approved', 'Rejected', 'Banned'], "Invalid status")
     .required("Status is required"),

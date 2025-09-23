@@ -22,7 +22,6 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Đóng menu khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -35,7 +34,6 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
 
   const handleLogout = () => {
     console.log("User logged out!");
-    // 👉 thêm clear token hoặc redirect login tại đây
     setShowDropdown(false);
   };
 
@@ -52,7 +50,6 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
   return (
     <div className="bg-[#5D7B6F] border-b border-gray-200 px-4 lg:px-6 py-4 dark:bg-[#0b1f3a]">
       <div className="flex items-center justify-between">
-        {/* Left */}
         <div className="flex items-center space-x-4">
           <button
             onClick={onMenuClick}
@@ -61,13 +58,12 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
             <Menu className="w-5 h-5" />
           </button>
 
-          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-200 dark:text-white">
             {navItems.map((item) => renderNavItem(item))}
           </h1>
         </div>
 
         <div className="flex items-center space-x-2 lg:space-x-4 ">
-          {/* Search - hidden on mobile, shown on tablet+ */}
           <div className="relative hidden md:block">
             <Search className="w-5 h-5 absolute dark:text-nerual-900 left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
@@ -76,23 +72,21 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-48 lg:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <button className="md:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button className="md:hidden p-2 text-white hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
             <Search className="w-5 h-5 " />
           </button>
 
           {/* Other buttons */}
           <div className="flex items-center space-x-1 lg:space-x-2">
-            <button className="hidden sm:block p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            <button className="hidden sm:block p-2 text-white hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
               <HelpCircle className="w-5 h-5" />
             </button>
 
-            {/* Settings button - hidden on small mobile */}
-            <button className="hidden sm:block p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            <button className="hidden sm:block p-2 text-white hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
               <Settings className="w-5 h-5" />
             </button>
 
-            {/* Notification button */}
-            <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+            <button className="p-2 text-white hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
@@ -106,15 +100,20 @@ const TopNav: React.FC<TopNavProps> = ({ onMenuClick }) => {
                 onClick={() => setShowDropdown((prev) => !prev)}
                 className="flex items-center space-x-2 lg:space-x-3 cursor-pointer"
               >
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                <div className="bg-">
+                  <img
+                    src="/image/admin.png"
+                    alt="Logo"
+                    width={60}
+                    height={60}
+                  />
                 </div>
                 <div className="hidden lg:block">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    John Creator
+                  <p className="text-sm font-medium text-white dark:text-white">
+                    Admin
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-white">
-                    john@example.com
+                  <p className="text-xs text-white dark:text-white">
+                    Admin123@example.com
                   </p>
                 </div>
               </div>

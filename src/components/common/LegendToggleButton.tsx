@@ -1,11 +1,10 @@
-// components/common/LegendToggleButton.tsx
 import { Icon } from "@iconify/react";
 
 interface LegendToggleButtonProps {
-  /* key của series trong ECharts, viết thường */
+  
   name: "normal users" | "pro users";
-  icon: string; // tên icon từ Iconify
-  colorClass: string; // lớp Tailwind cho màu icon, ví dụ 'text-purple-700'
+  icon: string;  
+  colorClass: string; 
   legend: Record<string, boolean>;
   onToggle: (name: "normal users" | "pro users") => void;
 }

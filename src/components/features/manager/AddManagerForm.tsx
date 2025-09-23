@@ -29,12 +29,8 @@ const AddManagerForm: React.FC<AddManagerFormProps> = ({onSubmit}) => {
 return (
   <form
     onSubmit={handleSubmit(handleFormSubmit)}
-    className="space-y-4 p-6 bg-white rounded-xl shadow-md mt-4 transition-all duration-200 w-full"
+    className="space-y-4 p-6 bg-white rounded-xl shadow-mdtransition-all duration-200 w-full"
   >
-    <h2 className="text-xl font-semibold text-gray-800">
-      Create Manager Account
-    </h2>
-
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="flex flex-col">
         <input
@@ -115,6 +111,29 @@ return (
           <p className="text-red-500">{errors.dateOfBirth.message}</p>
         )}
       </div>
+       <div className="flex flex-col">
+          <input
+            {...register("address")}
+            type="text"
+            placeholder="Address"
+            className="p-2 border rounded-md"
+          />
+          {errors.address && (
+            <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
+          )}
+        </div>
+
+        {/* Role */}
+        <div className="flex flex-col">
+          <select {...register("role")} className="p-2 border rounded-md">
+            <option value="">Select Role</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+          </select>
+          {errors.role && (
+            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
+          )}
+        </div>
       <select
         {...register("status")}
         className="p-2 border rounded-md"
@@ -126,7 +145,7 @@ return (
 
     <button
       type="submit"
-      className="w-full py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700"
+      className="w-full py-2 rounded-md text-white font-medium bg-green-500 hover:bg-yellow-500"
     >
       Create Manager
     </button>

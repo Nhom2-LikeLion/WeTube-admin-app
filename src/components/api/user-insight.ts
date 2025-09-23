@@ -41,7 +41,7 @@ export async function fetchUserInsights(
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Error ${res.status} when calling ${url}`);
 
-  const rows = (await res.json()) as ApiRow[]; // [{label, normal, pro} …]
+  const rows = (await res.json()) as ApiRow[]; 
 
   return {
     "normal users": rows.map((r) => r.normal),

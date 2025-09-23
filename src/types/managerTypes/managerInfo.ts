@@ -7,6 +7,8 @@ export interface managerData {
   phone: string;
   avatarUrl?: string;
   dateOfBirth: string;
+  address: string;
+  role: 'Manager' | 'Admin';
   gender: 'male' | 'female' | 'other';
   status: 'Pending' | 'Approved' | 'Rejected'| 'Banned';
   dailyReports?: number;      

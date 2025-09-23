@@ -8,11 +8,9 @@ import {
   useGetManagerInfoQuery,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";
-import ManagerInfoPage from "../features/manager/ManagerInfo";
 import type { RHFRegisterFormValues } from "../../types/managerTypes/registerManager";
-import { UpdateManagerForm } from "../features/manager/UpdateManagerForm";
-import { ManagerList } from "../features/manager/ManagerList";
 import AddManagerForm from "../features/manager/AddManagerForm";
+import { Plus, FileDown, FileUp, Copy, FileSpreadsheet, FileText, Trash2, Edit } from "lucide-react";
 
 const Modal: React.FC<{
   isOpen: boolean;
@@ -38,14 +36,13 @@ const Modal: React.FC<{
 export const ManageManagersPage: React.FC = () => {
   const { managerId } = useParams<{ managerId?: string }>();
   const navigate = useNavigate();
+  
   const [selectedManagerId, setSelectedManagerId] = useState<string | null>(managerId || null);
   const [formState, setFormState] = useState<{
     showAddForm: boolean;
-    showUpdateForm: boolean;
     managerInfo: RHFRegisterFormValues;
   }>({
     showAddForm: false,
-    showUpdateForm: false,
     managerInfo: {
       name: "",
       email: "",
@@ -54,264 +51,180 @@ export const ManageManagersPage: React.FC = () => {
       confirmPassword: "",
       gender: "male",
       dateOfBirth: "",
+      address: "",
+      role:"Manager",
       status: "Pending",
     },
   });
 
-  const {
-    data: managers = [],
-    isLoading: isManagersLoading,
-    error: managersError,
-  } = useGetManagersQuery();
-  const [addManager, { isLoading: isAdding }] = useAddManagerMutation();
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const managersPerPage = 10;
+
+  const { data: managers = [], isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
+
+  const [addManager] = useAddManagerMutation();
   const [deleteManager] = useDeleteManagerMutation();
-  const [updateManagerInfo, { isLoading: isUpdating }] = useUpdateManagerInfoMutation();
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
-  const [banTargetId, setBanTargetId] = useState<string | null>(null);
-  const { data: managerInfo, isLoading: isManagerLoading } = useGetManagerInfoQuery(selectedManagerId!, { skip: !selectedManagerId });
 
-  useEffect(() => {
-  if (managerInfo) {
-    setFormState((prev) => ({
-      ...prev,
-      managerInfo: {
-        name: managerInfo.name,
-        email: managerInfo.email,
-        phone: managerInfo.phone,
-        password: "",
-        confirmPassword: "",
-        gender: managerInfo.gender,
-        dateOfBirth: managerInfo.dateOfBirth,
-        status: managerInfo.status,
-      },
-    }));
-  }
-}, [managerInfo]);
-
-
-
-  const renderLoadingOrError = () => {
-    if (isManagersLoading) return <p className="text-center text-gray-600">Loading manager list...</p>;
-    if (managersError) return <p className="text-center text-red-600">An error occurred while loading the manager list!</p>;
-    return null;
-  };
-
+  const totalPages = Math.ceil(managers.length / managersPerPage);
+  const currentManagers = managers.slice(
+    (currentPage - 1) * managersPerPage,
+    currentPage * managersPerPage
+  );
 
   const handleAddManager = useCallback(
-  async (data: RHFRegisterFormValues) => {
+    async (data: RHFRegisterFormValues) => {
       try {
-      await addManager(data).unwrap();
+        await addManager(data).unwrap();
         toast.success("Manager added successfully!");
-        setFormState((prev) => ({
-          ...prev,
-          showAddForm: false,
-        }));
+        setFormState((prev) => ({ ...prev, showAddForm: false }));
       } catch {
         toast.error("Failed to add manager!");
       }
     },
-  [addManager]
+    [addManager]
   );
+   
 
-const handleEditManager = useCallback((id: string) => {
-  setSelectedManagerId(id);
-  setFormState((prev) => ({
-    ...prev,
-    showUpdateForm: true,
-  }));
-}, []);
-
-  const confirmBanManager = useCallback( async () => {
-    if (!banTargetId) return;
-      try {
-        toast.success("Manager banned successfully!");
-        if (selectedManagerId === banTargetId) {
-          setSelectedManagerId(null);
-          navigate("/managers");
-        }
-      } catch {
-        toast.error("Failed to deactive manager!");
-      }
-    }, [ banTargetId ,selectedManagerId, navigate]
-  );
-  const handleBanManager = (id: string) => {
-  setBanTargetId(id);
-};
-
-
-
-  const handleUpdateManagerInfo = useCallback(
-  async (data: RHFRegisterFormValues) => {
-    if (!selectedManagerId) {
-      toast.error("Please select a manager!");
-        return;
-      }
-      try {
-      await updateManagerInfo({ id: selectedManagerId, data }).unwrap();
-        toast.success("Manager information updated successfully!");
-        setFormState((prev) => ({ ...prev, showUpdateForm: false }));
-      } catch {
-        toast.error("Failed to update manager information!");
-      }
-    },
-  [updateManagerInfo, selectedManagerId]
-);
-
-
-   const handleDeleteManager = useCallback(
-    async () => {
-      if(!deleteTargetId) return;
-      
-      try {
-        await deleteManager(deleteTargetId).unwrap();
-        toast.success("Manager deleted successfully!");
-        if (selectedManagerId === deleteTargetId) setSelectedManagerId(null);
-      } catch {
-        toast.error("Failed to delete manager!");
-      } finally {
-        setDeleteTargetId(null);
-      }
-    }, [deleteManager, deleteTargetId ,selectedManagerId]
-  );
-
-  const handleDeleteClick = useCallback((id: string) => {
-  setDeleteTargetId(id);
-}, []);
-
+  const handleDeleteManager = useCallback(async () => {
+    if (!deleteTargetId) return;
+    try {
+      await deleteManager(deleteTargetId).unwrap();
+      toast.success("Manager deleted successfully!");
+      if (selectedManagerId === deleteTargetId) setSelectedManagerId(null);
+    } catch {
+      toast.error("Failed to delete manager!");
+    } finally {
+      setDeleteTargetId(null);
+    }
+  }, [deleteManager, deleteTargetId, selectedManagerId]);
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Manage Managers</h1>
+    <div className="w-full min-h-screen p-6 bg-gradient-to-br from-green-300 via-blue-200 to-yellow-100 dark:bg-[#034c5f]">
+      {/* Action buttons */}
+      <div className="flex gap-2 mb-4 flex-wrap">
         <button
-          onClick={() =>
-            setFormState((prev) => ({
-              ...prev,
-              showAddForm: !prev.showAddForm,
-            }))
-          }
-          className="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
-          disabled={isAdding}
+          onClick={() => setFormState((prev) => ({ ...prev, showAddForm: true }))}
+          className="px-3 py-2 bg-green-600 text-white rounded-md flex items-center gap-2 hover:bg-green-700"
         >
-          {formState.showAddForm ? "Close" : "Create New"}
+          <Plus size={18} /> Add New Manager
+        </button>
+        <button className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2 hover:bg-yellow-600">
+          <FileUp size={18} /> Upload from File
+        </button>
+        <button className="px-3 py-2 bg-blue-500 text-white rounded-md flex items-center gap-2 hover:bg-blue-600">
+          <FileDown size={18} /> Download Data
+        </button>
+        <button className="px-3 py-2 bg-indigo-500 text-white rounded-md flex items-center gap-2 hover:bg-indigo-600">
+          <Copy size={18} /> Copy
+        </button>
+        <button className="px-3 py-2 bg-green-500 text-white rounded-md flex items-center gap-2 hover:bg-green-600">
+          <FileSpreadsheet size={18} /> Export Excel
+        </button>
+        <button className="px-3 py-2 bg-red-500 text-white rounded-md flex items-center gap-2 hover:bg-red-600">
+          <FileText size={18} /> Export PDF
+        </button>
+        <button className="px-3 py-2 bg-gray-500 text-white rounded-md flex items-center gap-2 hover:bg-gray-600">
+          <Trash2 size={18} /> Delete All
         </button>
       </div>
 
-      {renderLoadingOrError() || (
-        <div className="space-y-6">
-          <div className="w-full ">
-            <ManagerList
-              managers={managers}
-              selectedManagerId={selectedManagerId}
-              onSelect={setSelectedManagerId}
-              onView={setSelectedManagerId}
-              onEdit={handleEditManager}
-              onDelete={handleDeleteClick}
-              onBanned={handleBanManager}
-            />
-          </div>
+      {/* Table */}
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <table className="w-full border-collapse">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="p-2 border">Manager ID</th>
+              <th className="p-2 border">Name</th>
+              <th className="p-2 border">Avatar</th>
+              <th className="p-2 border">Address</th>
+              <th className="p-2 border">Date of Birth</th>
+              <th className="p-2 border">Gender</th>
+              <th className="p-2 border">Phone</th>
+              <th className="p-2 border">Role</th>
+              <th className="p-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentManagers.map((m: any) => (
+              <tr key={m.id} className="text-center">
+                <td className="border p-2">{m.id}</td>
+                <td className="border p-2">{m.name}</td>
+                <td className="border p-2">
+                  <img
+                    src={m.avatarUrl || "/default-avatar.png"}
+                    alt={m.name}
+                    className="w-10 h-10 rounded-full mx-auto"
+                  />
+                </td>
+                <td className="border p-2">{m.address}</td>
+                <td className="border p-2">{m.dateOfBirth}</td>
+                <td className="border p-2">{m.gender}</td>
+                <td className="border p-2">{m.phone}</td>
+                <td className="border p-2">{m.role}</td>
+                <td className="border p-2 flex justify-center gap-2">
+                  <button className="p-2 bg-yellow-400 rounded hover:bg-yellow-500">
+                    <Edit size={16} />
+                  </button>
+                  <button
+                    onClick={() => setDeleteTargetId(m.id)}
+                    className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-          <Modal
-            isOpen={formState.showAddForm}
-            onClose={() =>
-              setFormState((prev) => ({ ...prev, showAddForm: false }))
-            }
-          >
-            <AddManagerForm onSubmit={handleAddManager} />
-          </Modal>
-
-          <Modal
-            isOpen={!!selectedManagerId}
-            onClose={() => setSelectedManagerId(null)}
-          >
-            {/* {selectedManagerId && (
-              <ManagerInfoPage managerId={selectedManagerId} />
-            )} */}
-            {isManagerLoading ? (
-              <p className="text-center text-gray-600">
-                Loading manager info...
-              </p>
-            ) : (
-              selectedManagerId && (
-                <ManagerInfoPage managerId={selectedManagerId} />
-              )
-            )}
-          </Modal>
-
-          <Modal
-            isOpen={formState.showUpdateForm}
-            onClose={() =>
-              setFormState((prev) => ({ ...prev, showUpdateForm: false }))
-            }
-          >
-            <UpdateManagerForm
-              defaultValues={{
-                name: managerInfo?.name || "",
-                email: managerInfo?.email || "",
-                phone: managerInfo?.phone || "",
-                password: "",
-                confirmPassword: "",
-                gender: managerInfo?.gender || "male",
-                dateOfBirth: managerInfo?.dateOfBirth || "",
-                status: managerInfo?.status || "Pending",
-              }}
-              onSubmit={handleUpdateManagerInfo}
-              isLoading={isUpdating}
-            />
-          </Modal>
-          <Modal
-            isOpen={!!banTargetId}
-            onClose={() => setBanTargetId(null)}
-          >
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold text-gray-800">
-                Ban Confirmation
-              </h2>
-              <p>Are you sure you want to deactivate this manager?</p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setBanTargetId(null)}
-                  className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmBanManager}
-                  className="px-4 py-2 rounded-md bg-yellow-600 text-white hover:bg-yellow-700"
-                >
-                  Deactivate
-                </button>
-              </div>
-            </div>
-          </Modal>
-
-          <Modal
-            isOpen={!!deleteTargetId}
-            onClose={() => setDeleteTargetId(null)}
-          >
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold text-gray-800">
-                Delete Confirmation
-              </h2>
-              <p>Are you sure you want to delete this manager?</p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setDeleteTargetId(null)}
-                  className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDeleteManager}
-                  className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </Modal>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-4">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`px-3 py-1 rounded-md ${
+                page === currentPage
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
         </div>
       )}
+
+      {/* Add Manager Modal */}
+      <Modal isOpen={formState.showAddForm} onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}>
+        <AddManagerForm onSubmit={handleAddManager} />
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal isOpen={!!deleteTargetId} onClose={() => setDeleteTargetId(null)}>
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-gray-800">Delete Confirmation</h2>
+          <p>Are you sure you want to delete this manager?</p>
+          <div className="flex justify-end gap-4">
+            <button
+              onClick={() => setDeleteTargetId(null)}
+              className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteManager}
+              className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

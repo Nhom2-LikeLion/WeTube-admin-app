@@ -2,16 +2,17 @@ import React from "react";
 import { useGetManagerInfoQuery, useGetManagersQuery } from "../../../services/api/managerApi";
 
 interface Props {
-  managerId: string| null ;
+  managerId: string | null;
 }
 
 const ManagerInfoPage: React.FC<Props> = ({ managerId }) => {
-  const { data: managerData, isLoading: isManagerLoading, error: managerError } = useGetManagerInfoQuery(managerId! , {skip: !managerId} );
+  const { data: managerData, isLoading: isManagerLoading, error: managerError } = useGetManagerInfoQuery(managerId!, { skip: !managerId });
   const { isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
 
-
-  if (isManagerLoading || isManagersLoading) return <p className="text-center text-gray-700">Đang tải thông tin...</p>;
-  if (managerError || managersError) return <p className="text-center text-red-600">Có lỗi xảy ra khi tải dữ liệu!</p>;
+  if (isManagerLoading || isManagersLoading)
+    return <p className="text-center text-gray-700">Đang tải thông tin...</p>;
+  if (managerError || managersError)
+    return <p className="text-center text-red-600">Có lỗi xảy ra khi tải dữ liệu!</p>;
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md max-w-5xl mx-auto space-y-6">
@@ -23,7 +24,9 @@ const ManagerInfoPage: React.FC<Props> = ({ managerId }) => {
           <p><strong>Email:</strong> {managerData?.email || "N/A"}</p>
           <p><strong>Phone:</strong> {managerData?.phone || "N/A"}</p>
           <p><strong>Date of Birth:</strong> {managerData?.dateOfBirth || "N/A"}</p>
+          <p><strong>Address:</strong> {managerData?.address || "N/A"}</p>
           <p><strong>Gender:</strong> {managerData?.gender || "N/A"}</p>
+          <p><strong>Role:</strong> {managerData?.role || "N/A"}</p>
           <p><strong>Status:</strong> 
             <span className={`ml-2 font-semibold ${
               managerData?.status === "Approved" ? "text-green-600" :
@@ -38,6 +41,7 @@ const ManagerInfoPage: React.FC<Props> = ({ managerId }) => {
           <p><strong>Processed Reports:</strong> {managerData?.processedReports ?? 0}</p>
           <p><strong>Unprocessed Reports:</strong> {managerData?.unprocessedReports ?? 0}</p>
         </div>
+
         <div className="flex justify-center">
           <img
             src={managerData?.avatarUrl || "https://via.placeholder.com/150"}
