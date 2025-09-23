@@ -1,16 +1,23 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   useAddManagerMutation,
   useDeleteManagerMutation,
   useGetManagersQuery,
-  useUpdateManagerInfoMutation,
-  useGetManagerInfoQuery,
 } from "../../services/api/managerApi";
 import { toast } from "react-toastify";
 import type { RHFRegisterFormValues } from "../../types/managerTypes/registerManager";
 import AddManagerForm from "../features/manager/AddManagerForm";
-import { Plus, FileDown, FileUp, Copy, FileSpreadsheet, FileText, Trash2, Edit } from "lucide-react";
+import {
+  Plus,
+  FileDown,
+  FileUp,
+  Copy,
+  FileSpreadsheet,
+  FileText,
+  Trash2,
+  Edit,
+} from "lucide-react";
 
 const Modal: React.FC<{
   isOpen: boolean;
@@ -36,12 +43,14 @@ const Modal: React.FC<{
 export const ManageManagersPage: React.FC = () => {
   const { managerId } = useParams<{ managerId?: string }>();
   const navigate = useNavigate();
-  
-  const [selectedManagerId, setSelectedManagerId] = useState<string | null>(managerId || null);
+
+  const [selectedManagerId, setSelectedManagerId] = useState<string | null>(
+    managerId || null
+  );
   const [formState, setFormState] = useState<{
     showAddForm: boolean;
     managerInfo: RHFRegisterFormValues;
-  }>({
+  }>(() => ({
     showAddForm: false,
     managerInfo: {
       name: "",
@@ -52,26 +61,40 @@ export const ManageManagersPage: React.FC = () => {
       gender: "male",
       dateOfBirth: "",
       address: "",
-      role:"Manager",
+      role: "Manager",
       status: "Pending",
     },
-  });
+  }));
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const managersPerPage = 10;
 
-  const { data: managers = [], isLoading: isManagersLoading, error: managersError } = useGetManagersQuery();
+  const {
+    data: managers = [],
+    isLoading: isManagersLoading,
+    error: managersError,
+  } = useGetManagersQuery();
 
   const [addManager] = useAddManagerMutation();
   const [deleteManager] = useDeleteManagerMutation();
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
-  const totalPages = Math.ceil(managers.length / managersPerPage);
+  // đảm bảo ít nhất 1 trang để pagination luôn hiển thị
+  const totalPages = Math.max(1, Math.ceil(managers.length / managersPerPage));
   const currentManagers = managers.slice(
     (currentPage - 1) * managersPerPage,
     currentPage * managersPerPage
   );
+
+  const tableScrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Khi chuyển trang, scroll lên đầu phần bảng (nếu có scroll)
+  useEffect(() => {
+    if (tableScrollRef.current) {
+      tableScrollRef.current.scrollTop = 0;
+    }
+  }, [currentPage]);
 
   const handleAddManager = useCallback(
     async (data: RHFRegisterFormValues) => {
@@ -85,7 +108,6 @@ export const ManageManagersPage: React.FC = () => {
     },
     [addManager]
   );
-   
 
   const handleDeleteManager = useCallback(async () => {
     if (!deleteTargetId) return;
@@ -101,11 +123,13 @@ export const ManageManagersPage: React.FC = () => {
   }, [deleteManager, deleteTargetId, selectedManagerId]);
 
   return (
-    <div className="w-full min-h-screen p-6 bg-gradient-to-br from-green-300 via-blue-200 to-yellow-100 dark:bg-[#034c5f]">
-      {/* Action buttons */}
+    <div className="h-173 w-full p-6 bg-gradient-to-br from-green-300 via-blue-200 to-yellow-100 dark:bg-[#034c5f]">
+      <div className="h-full flex flex-col">
       <div className="flex gap-2 mb-4 flex-wrap">
         <button
-          onClick={() => setFormState((prev) => ({ ...prev, showAddForm: true }))}
+          onClick={() =>
+            setFormState((prev) => ({ ...prev, showAddForm: true }))
+          }
           className="px-3 py-2 bg-green-600 text-white rounded-md flex items-center gap-2 hover:bg-green-700"
         >
           <Plus size={18} /> Add New Manager
@@ -130,8 +154,10 @@ export const ManageManagersPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
+      <div
+        ref={tableScrollRef}
+        className="bg-white rounded-lg shadow mb-6 max-h-[60vh] overflow-auto"
+      >
         <table className="w-full border-collapse">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
@@ -146,6 +172,7 @@ export const ManageManagersPage: React.FC = () => {
               <th className="p-2 border">Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {currentManagers.map((m: any) => (
               <tr key={m.id} className="text-center">
@@ -176,38 +203,58 @@ export const ManageManagersPage: React.FC = () => {
                 </td>
               </tr>
             ))}
+            {currentManagers.length === 0 && (
+              <tr>
+                <td colSpan={9} className="p-4 text-center text-gray-500">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            )}
           </tbody>
+
+          {/* Pagination nằm trong tfoot để hiển thị "bên trong" table */}
+          <tfoot>
+            <tr className="sticky bottom-0">
+              <td colSpan={9} className="bg-white border-t p-3">
+                <div className="flex justify-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-1 rounded-md ${
+                          page === currentPage
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-4">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`px-3 py-1 rounded-md ${
-                page === currentPage
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
-      )}
-
       {/* Add Manager Modal */}
-      <Modal isOpen={formState.showAddForm} onClose={() => setFormState((prev) => ({ ...prev, showAddForm: false }))}>
+      <Modal
+        isOpen={formState.showAddForm}
+        onClose={() =>
+          setFormState((prev) => ({ ...prev, showAddForm: false }))
+        }
+      >
         <AddManagerForm onSubmit={handleAddManager} />
       </Modal>
 
       {/* Delete Confirmation Modal */}
       <Modal isOpen={!!deleteTargetId} onClose={() => setDeleteTargetId(null)}>
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-gray-800">Delete Confirmation</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            Delete Confirmation
+          </h2>
           <p>Are you sure you want to delete this manager?</p>
           <div className="flex justify-end gap-4">
             <button
@@ -225,6 +272,7 @@ export const ManageManagersPage: React.FC = () => {
           </div>
         </div>
       </Modal>
+      </div>
     </div>
   );
 };

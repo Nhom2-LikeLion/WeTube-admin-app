@@ -196,13 +196,6 @@ const VideoManagement: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto p-6">
-      {/* Header Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 mt-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Video Censorship</h2>
-          <p className="text-gray-600">Moderate and manage video content on the platform</p>
-        </div>
-      </div>
 
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-6">

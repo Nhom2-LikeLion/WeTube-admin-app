@@ -56,9 +56,6 @@ export const ManageChannelPage = () => {
   return (
     <>
       <div className="p-6 max-w-7xl mx-auto border border-gray-300 rounded-lg bg-gray-50 font-inter">
-        <div className="mb-6 p-4 rounded-lg shadow-sm">
-          <h1 className="text-3xl font-bold">Manage Channel</h1>
-        </div>
 
         <div className="mb-6">
           <FilterSortPanel
